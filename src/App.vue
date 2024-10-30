@@ -2,15 +2,28 @@
 import { RouterView } from 'vue-router'
 import { useTheme } from 'vuetify'
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const theme = useTheme()
+const snackbar = ref(false)
+const $router = useRouter()
+
+const courses = [
+  { label: '000-0000-00L', path: '000-0000-00L' },
+  { label: '000-0000-01L', path: '000-0000-01L' },
+  { label: '[NR] ja hallo erst mal', path: '000-0000-02L' }
+]
+
+function navigateToPage (path) {
+  if (path) {
+    $router.push("/course/" + path)
+  }
+}
 
 function toggleTheme () {
   theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
   localStorage.setItem('theme', theme.global.name.value)
 }
-
-const snackbar = ref(true)
 
 function loadStoredTheme () {
   const storedTheme = localStorage.getItem('theme')
@@ -19,19 +32,41 @@ function loadStoredTheme () {
   }
 }
 
+function loadSnackbarState () {
+  const storedSnackbar = sessionStorage.getItem('snackbar')
+  if (!storedSnackbar) {
+    snackbar.value = true
+    sessionStorage.setItem('snackbar', 'true')
+  }
+}
+
 onMounted(() => {
   loadStoredTheme()
+  loadSnackbarState()
 })
 </script>
 
 <template>
   <v-app>
     <v-app-bar :elevation="2">
-      <v-app-bar-title>CourseReview</v-app-bar-title>
+      <v-app-bar-title>
+        <router-link to="/" exact class="unstyled-link" >CourseReview</router-link>
+      </v-app-bar-title>
       <template v-slot:append>
-        <v-autocomplete variant="underlined" label="Course Search" width="264px" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first></v-autocomplete>
-        <v-btn variant="text" icon="mdi-invoice-text-plus-outline"></v-btn>
-        <v-btn variant="text" icon="mdi-account" to="/user" />
+        <v-autocomplete variant="underlined" label="Course Search" width="264px" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="path" @update:modelValue="navigateToPage" />
+
+        <v-tooltip location="bottom" text="Add a Review">
+          <template v-slot:activator="{ props }">
+            <v-btn variant="text" icon="mdi-invoice-text-plus-outline" v-bind="props" />
+          </template>
+        </v-tooltip>
+
+        <v-tooltip location="bottom" text="Your Reviews">
+          <template v-slot:activator="{ props }">
+            <v-btn variant="text" icon="mdi-account" to="/user" v-bind="props" />
+          </template>
+        </v-tooltip>
+
         <v-btn @click="toggleTheme" :icon="theme.global.current.value.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night'"></v-btn>
       </template>
     </v-app-bar>
@@ -59,4 +94,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.unstyled-link {
+  color: inherit;
+  text-decoration: none;
+}
 </style>
