@@ -81,7 +81,7 @@ onMounted(() => {
 
     <v-footer :elevation="2" :app="true" class="d-flex flex-column text-center">
       <div>
-        <v-btn variant="text" icon="mdi-github" href="https://github.com/" target="_blank" density="comfortable" />
+        <v-btn variant="text" icon="mdi-github" href="https://github.com/orgs/course-review/" target="_blank" density="comfortable" />
         <v-btn variant="text" icon="mdi-email-fast-outline" density="comfortable" />
         <v-btn variant="text" icon="mdi-information-outline" to="/about" density="comfortable" />
       </div>
