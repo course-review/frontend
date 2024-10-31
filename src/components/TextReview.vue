@@ -4,7 +4,7 @@ const {course = "", editable = false} = defineProps<{course?: string, review: st
 
 <template>
   <v-card max-width="500" class="border mt-2">
-    <v-card-title v-if="course.length > 0">{{ course }}</v-card-title>
+    <v-card-title v-if="course.length > 0"><v-btn variant="text" :to="`/course/${course}`">{{ course }}</v-btn></v-card-title>
     <v-card-text>
       <div v-for="(block, index) in review.split('\n')" :key="index">
         {{ block }}
