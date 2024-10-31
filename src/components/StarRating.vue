@@ -14,7 +14,7 @@ const ratingCategories: {[key: string]: string} = {
 </script>
 
 <template>
-  <v-card max-width="500">
+  <v-card max-width="500" class="pb-2 border">
     <div v-for="(label, key) in ratingCategories" :key="key">
       <v-card-text style="float: left;">{{ label }}:</v-card-text>
       <v-rating half-increments :length="5" :model-value="ratings[key].rating" color="amber" readonly ></v-rating>

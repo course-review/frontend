@@ -3,7 +3,7 @@ const {course = "", editable = false} = defineProps<{course?: string, review: st
 </script>
 
 <template>
-  <v-card max-width="500">
+  <v-card max-width="500" class="border mt-2">
     <v-card-title v-if="course.length > 0">{{ course }}</v-card-title>
     <v-card-text>
       <div v-for="(block, index) in review.split('\n')" :key="index">
@@ -11,7 +11,7 @@ const {course = "", editable = false} = defineProps<{course?: string, review: st
         <br v-if="block.length == 0" />
       </div>
     </v-card-text>
-    <v-card-subtitle>{{ semester }}</v-card-subtitle>
+    <v-card-subtitle class="text-right mb-1">{{ semester }}</v-card-subtitle>
     <v-card-actions v-if="editable">
       <v-btn variant="tonal" color="red">Edit</v-btn>
     </v-card-actions>
