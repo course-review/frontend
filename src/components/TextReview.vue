@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const {course = "", editable = false} = defineProps<{course?: string, review: string, semester: string, editable?: bool}>()
+const {course = "", editable = false} = defineProps<{course?: string, review: string, semester: string, editable?: boolean}>()
 </script>
 
 <template>

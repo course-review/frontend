@@ -14,7 +14,7 @@ const courses = [
   { label: '[NR] ja hallo erst mal', path: '000-0000-02L' }
 ]
 
-function navigateToPage (path) {
+function navigateToPage (path: string) {
   if (path) {
     $router.push("/course/" + path)
   }

@@ -1,4 +1,4 @@
-interface Rating {
+export interface Rating {
     rating: number
     oneStarRatings: number
     twoStarRatings: number

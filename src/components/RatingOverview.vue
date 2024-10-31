@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Rating } from './Rating.types'
+import type { Rating } from './Rating.types'
 import { ref } from 'vue'
 
 defineProps<{ratingDetails: Rating}>()

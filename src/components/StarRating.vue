@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import RatingOverview from '@/components/RatingOverview.vue'
-import { Rating } from './Rating.types'
+import RatingOverview from '../components/RatingOverview.vue'
+import type { Rating } from './Rating.types'
 
 defineProps<{ratings: {[key: string]: Rating}}>()
 
-const ratingCategories: {[key: string]: labels} = {
+const ratingCategories: {[key: string]: string} = {
   "recommended": "I would recommend it",
   "engaging": "The content is interesting",
   "difficulty": "The difficulty is appropriate",
