@@ -48,7 +48,8 @@ function handleRatingChange(id: string, value: number) {
                     <v-select density="compact" variant="underlined" max-width="100px" :items="semesters" />
                 </div>
                 <StarRating :ratings="starRatings" :editable="true" @update-rating="handleRatingChange"/>
-                <TextReview :review="loremipsum" semester="FS2021" :editable="true" />
+                <TextReview :review="loremipsum" :editable="true" />
+                <TextReview :review="loremipsum" :editable="true" />
             </v-col>
         </v-container>
 

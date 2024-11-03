@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-const { editable = false, review } = defineProps<{review: string, semester: string, editable?: boolean}>()
+const { editable = false, review } = defineProps<{review: string, editable?: boolean}>()
 
 function deleteReview() {
   console.log('Delete review')
@@ -37,7 +37,6 @@ function submitEdit() {
         auto-grow
     ></v-textarea>
     </v-card-text>
-    <v-card-subtitle v-if="!editable">{{ semester }}</v-card-subtitle>
     <v-card-actions v-if="editable">
       <v-btn variant="tonal" color="orange" @click.stop="toggleEdit">{{ isEditing ? 'Cancel' : 'Edit' }}</v-btn>
       <v-btn v-if="isEditing" variant="tonal" color="green" @click.stop="submitEdit">Submit</v-btn>
