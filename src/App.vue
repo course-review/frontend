@@ -3,16 +3,22 @@ import { RouterView } from 'vue-router'
 import { useTheme } from 'vuetify'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { coursesData } from '@/services/api';
 
 const theme = useTheme()
 const snackbar = ref(false)
 const $router = useRouter()
+const courses = ref<{ label: string; path: string }[]>([
+]);
+coursesData().then(response => {
+  const fetchedCourses = response.data.map(course => ({
+    label: `${course.CourseNumber} ${course.CourseName}`,
+    path: course.CourseNumber
+  }));
+  courses.value.push(...fetchedCourses);
+});
 
-const courses = [
-  { label: '000-0000-00L', path: '000-0000-00L' },
-  { label: '000-0000-01L', path: '000-0000-01L' },
-  { label: '[NR] ja hallo erst mal', path: '000-0000-02L' }
-]
+console.log(courses);
 
 function navigateToPage (path: string) {
   if (path) {
