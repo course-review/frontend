@@ -10,7 +10,7 @@ function sumRatings(rds: RatingDetails | null): number {
   if (rds === null) return 0
   
   totalRatings.value = Object.values(rds).reduce((sum, rating) => sum + rating, 0)
-  ratingCountList.value = Object.values(rds).slice(1)
+  ratingCountList.value = Object.values(rds).slice()
   return totalRatings.value
 }
 </script>
@@ -29,8 +29,6 @@ function sumRatings(rds: RatingDetails | null): number {
           {{ ratingInformation.rating }}
           <span class="text-h6 ml-n3">/5</span>
         </div>
-
-        <v-rating :model-value="ratingInformation.rating" color="amber" half-increments />
 
         <div class="px-3">{{ sumRatings(ratingInformation.details) }}</div>
       </div>

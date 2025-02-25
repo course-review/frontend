@@ -3,14 +3,14 @@ import { RouterView } from 'vue-router'
 import { useTheme } from 'vuetify'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { coursesData } from '@/services/api';
+import { fetchCoursesData } from '@/services/api';
 
 const theme = useTheme()
 const snackbar = ref(false)
 const $router = useRouter()
 const courses = ref<{ label: string; path: string }[]>([
 ]);
-coursesData().then(response => {
+fetchCoursesData().then(response => {
   const fetchedCourses = response.data.map(course => ({
     label: `${course.CourseNumber} ${course.CourseName}`,
     path: course.CourseNumber
@@ -82,7 +82,7 @@ onMounted(() => {
         CourseReview is neither supported by ETH nor by VSETH, its a private initiative run by Students.
       </v-snackbar>
 
-      <RouterView />
+      <router-view :key="$route.fullPath"></router-view>
     </v-main>
 
     <v-footer :elevation="2" :app="true" class="d-flex flex-column text-center">

@@ -59,3 +59,9 @@ npm run test:e2e -- --debug
 ```sh
 npm run lint
 ```
+
+
+
+# todo
+faq page
+login/auth
