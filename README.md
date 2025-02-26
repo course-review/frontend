@@ -63,5 +63,23 @@ npm run lint
 
 
 # todo
-faq page
-login/auth
+## functionality
+- login/auth
+- front page
+- user page functionatlities of editing, removing
+- add page functionalities of adding
+- 3rd party embedding
+
+### comfort
+- having course selected when pressing on add button on a course page
+
+## stretch goals
+### easy
+- faq page
+- Page with all courses that have reviews or ratings
+
+### harder
+- saving non submitted reviews for later
+- better search: https://github.com/farzher/fuzzysort
+- animations
+- usage tracking
