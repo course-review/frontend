@@ -17,10 +17,14 @@ const ratingCategories: {[key: string]: string} = {
 
 function updateRating(id: string, value: number) {
   console.log(`API call to update rating '${id}' to: ${value}`)
+  localRatings.value[id].rating = value;
 }
 
 function clearAllRatings() {
   console.log('API call to clear all ratings or call updateRating for each rating :)')
+  for (const key in localRatings.value) {
+    localRatings.value[key].rating = 0;
+  }
 }
 </script>
 
