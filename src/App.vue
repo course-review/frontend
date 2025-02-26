@@ -63,7 +63,7 @@ onMounted(() => {
 
         <v-tooltip location="bottom" text="Add a Review">
           <template v-slot:activator="{ props }">
-            <v-btn variant="text" icon="mdi-invoice-text-plus-outline" v-bind="props" />
+            <v-btn variant="text" icon="mdi-invoice-text-plus-outline" to="/add" v-bind="props" />
           </template>
         </v-tooltip>
 

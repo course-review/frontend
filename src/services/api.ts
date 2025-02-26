@@ -17,6 +17,7 @@ export interface UserReview {
   Resources: number;
   Semester: string;
   CourseNumber: string;
+  CourseName: string;
 }
 
 export interface Review {
@@ -53,12 +54,16 @@ export const fetchName = async (courseNumber: string): Promise<AxiosResponse<str
   return API.get<string>(`/courseName?course=${courseNumber}`);
 }
 
-export const fetchUserData = async (username: string): Promise<AxiosResponse<UserReview>> => {
-  return API.get<UserReview>(`/getUserData?user=${username}`);
+export const fetchUserData = async (username: string): Promise<AxiosResponse<UserReview[]>> => {
+  return API.get<UserReview[]>(`/getUserData?user=${username}`);
 }
 
 export const fetchSemesters = async (): Promise<AxiosResponse<string[]>> => {
   return API.get<string[]>('/currentSemesters');
+}
+
+export const setCurrentSemesters = async (semester: string[]): Promise<AxiosResponse<string>> => {
+  return API.post<string>('/setCurrentSemester', semester);
 }
 
 
