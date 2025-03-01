@@ -20,6 +20,14 @@ export interface UserReview {
   CourseName: string;
 }
 
+export interface UnverifiedReview {
+  Review: string;
+  CourseNumber: string;
+  CourseName: string;
+  UserID: string;
+  Id: number;
+}
+
 export interface Review {
   Review: string;
   Semester: string;
@@ -27,6 +35,11 @@ export interface Review {
 
 export interface Rating2 {
   [key: string]: number;
+}
+
+export interface Stats {
+  TotalCourses: number;
+  TotalReviews: number;
 }
 
 // Create a typed Axios instance
@@ -62,10 +75,29 @@ export const fetchSemesters = async (): Promise<AxiosResponse<string[]>> => {
   return API.get<string[]>('/currentSemesters');
 }
 
-export const setCurrentSemesters = async (semester: string[]): Promise<AxiosResponse<string>> => {
-  return API.post<string>('/setCurrentSemester', semester);
+export const fetchUnverified = async (): Promise<AxiosResponse<UnverifiedReview[]>> => {
+  return API.get<UnverifiedReview[]>('/getUnverifiedReviews');
 }
 
+export const verifyReview = async (id: number): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/verifyReview?id=${id}`);
+}
+
+export const rejectReview = async (id: number): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/rejectReview?id=${id}`);
+}
+
+export const setCurrentSemesters = async (semester: string[]): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/setCurrentSemester?list=${semester}`);
+}
+
+export const fetchStats = async (): Promise<AxiosResponse<Stats>> => {
+  return API.get<Stats>('/stats');
+}
+
+export const setModerator = async (user: string): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/setModerator?user=${user}`);
+}
 
 export const starRatings: {[key: string]: Rating} = {
   Recommended: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
