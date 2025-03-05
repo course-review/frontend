@@ -64,12 +64,15 @@ npm run lint
 
 # todo
 ## functionality
-- login/auth
-- front page
-- user page functionatlities of editing, removing
-- add page functionalities of adding
 - 3rd party embedding
-
+  - main page
+  - course pages
+  - ★
+    - U+2605
+  - ⯨
+    - U+2BE8
+  - ☆
+    - U+2606
 ### comfort
 - having course selected when pressing on add button on a course page
 
@@ -77,6 +80,8 @@ npm run lint
 ### easy
 - faq page
 - Page with all courses that have reviews or ratings
+- chartjs for stats of tracking
+- check on add page if user already has a review for that course
 
 ### harder
 - saving non submitted reviews for later
