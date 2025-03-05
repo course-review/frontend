@@ -1,5 +1,7 @@
 import type { Rating } from '@/components/Rating.types';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
+import { useCookies } from 'vue3-cookies';
+const { cookies } = useCookies();
 
 // Define the expected structure of the course data (adjust as needed)
 export interface Course {
@@ -18,6 +20,8 @@ export interface UserReview {
   Semester: string;
   CourseNumber: string;
   CourseName: string;
+  ReviewId: number;
+  RatingId: number;
 }
 
 export interface UnverifiedReview {
@@ -44,8 +48,10 @@ export interface Stats {
 
 // Create a typed Axios instance
 const API: AxiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:3000',
+  baseURL: import.meta.env.VITE_API_URL,
 });
+
+const token = cookies.get('jwt');
 
 // Define the function with proper typing
 export const fetchCoursesData = async (): Promise<AxiosResponse<Course[]>> => {
@@ -63,41 +69,67 @@ export const fetchRatings = async (courseNumber: string): Promise<AxiosResponse<
 export const fetchLatestReviews = async (): Promise<AxiosResponse<Course[]>> => {
   return API.get<Course[]>('/latestReviews');
 }
+
 export const fetchName = async (courseNumber: string): Promise<AxiosResponse<string>> => {
   return API.get<string>(`/courseName?course=${courseNumber}`);
-}
-
-export const fetchUserData = async (username: string): Promise<AxiosResponse<UserReview[]>> => {
-  return API.get<UserReview[]>(`/getUserData?user=${username}`);
 }
 
 export const fetchSemesters = async (): Promise<AxiosResponse<string[]>> => {
   return API.get<string[]>('/currentSemesters');
 }
 
-export const fetchUnverified = async (): Promise<AxiosResponse<UnverifiedReview[]>> => {
-  return API.get<UnverifiedReview[]>('/getUnverifiedReviews');
-}
-
-export const verifyReview = async (id: number): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/verifyReview?id=${id}`);
-}
-
-export const rejectReview = async (id: number): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/rejectReview?id=${id}`);
-}
-
-export const setCurrentSemesters = async (semester: string[]): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/setCurrentSemester?list=${semester}`);
-}
-
 export const fetchStats = async (): Promise<AxiosResponse<Stats>> => {
   return API.get<Stats>('/stats');
 }
 
-export const setModerator = async (user: string): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/setModerator?user=${user}`);
+export const fetchUserData = async (): Promise<AxiosResponse<UserReview[]>> => {
+  return API.get<UserReview[]>(`/auth/getUserData?token=${token}`);
 }
+
+export const fetchUnverified = async (): Promise<AxiosResponse<UnverifiedReview[]>> => {
+  return API.get<UnverifiedReview[]>(`/moderator/getUnverifiedReviews?token=${token}`);
+}
+
+export const pushVerifyReview = async (id: number): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/moderator/verifyReview?id=${id}&token=${token}`);
+}
+
+export const pushRejectReview = async (id: number): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/moderator/rejectReview?id=${id}&token=${token}`);
+}
+
+export const pushSetCurrentSemesters = async (semester: string[]): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/moderator/setCurrentSemester?list=${semester}&token=${token}`);
+}
+
+export const pushSetModerator = async (user: string): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/admin/setModerator?user=${user}&token=${token}`);
+}
+
+export const pushUpdateReview = async (id: number, review: string): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/auth/updateReview?id=${id}&review=${review}&token=${token}`);
+}
+
+export const pushDeleteReview = async (id: number): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/auth/deleteReview?id=${id}&token=${token}`);
+}
+
+export const pushUpdateRating = async (id: number, rating: { [key: string]: Rating }): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/auth/updateRating?id=${id}${ratingToRequest(rating)}&token=${token}`);
+}
+
+export const pushNewReview = async (review: string, courseNumber: string, userID: string, semester: string, rating: { [key: string]: Rating}): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/auth/newReview?review=${review}&courseNumber=${courseNumber}&userID=${userID}&semester=${semester}${ratingToRequest(rating)}&token=${token}`);
+}
+
+export const pushSemesterChange = async (semester: string, id: number): Promise<AxiosResponse<string>> => {
+  return API.post<string>(`/auth/updateSemester?Semester=${semester}&id=${id}&token=${token}`);
+}
+
+function ratingToRequest(rating: { [key: string]: Rating }): string {
+  return `&recommended=${rating['Recommended'].rating}&engaging=${rating['Engaging'].rating}&difficulty=${rating['Difficulty'].rating}&effort=${rating['Effort'].rating}&resources=${rating['Resources'].rating}`;
+}
+
 
 export const starRatings: {[key: string]: Rating} = {
   Recommended: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
