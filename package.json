@@ -17,9 +17,16 @@
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
+    "@vueuse/head": "^2.0.0",
+    "jose": "^6.0.8",
+    "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "pinia": "^2.2.5",
+    "util": "^0.12.5",
     "vue": "^3.5.12",
+    "vue-meta": "^2.4.0",
     "vue-router": "^4.3.3",
+    "vue3-cookies": "^1.0.6",
     "vuetify": "^3.7.3"
   },
   "devDependencies": {
@@ -28,7 +35,9 @@
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^20.14.5",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/jwt-decode": "^3.1.0",
+    "@types/node": "^20.17.23",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-prettier": "^9.0.0",
     "@vue/eslint-config-typescript": "^13.0.0",
