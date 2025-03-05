@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { fetchSemesters, fetchUnverified, rejectReview, setCurrentSemesters, setModerator, type UnverifiedReview, verifyReview } from '@/services/api';
+import { fetchSemesters, fetchUnverified, pushRejectReview, pushSetCurrentSemesters, pushSetModerator, type UnverifiedReview, pushVerifyReview } from '@/services/api';
 import { onMounted, ref } from 'vue';
 import TextReview from '@/components/TextReview.vue';
 const user = ""
@@ -35,7 +35,7 @@ const addSemester = () => {
 <main>
     <h2>Moderator</h2>
     <input v-model="user" placeholder="numbers@ethz.ch" class="input-semester" />
-    <button @click="setModerator(user)" class="btn">Set Moderator</button>
+    <button @click="pushSetModerator(user)" class="btn">Set Moderator</button>
     <br>
 
     <h2>Semesters</h2>
@@ -48,7 +48,7 @@ const addSemester = () => {
     <input v-model="newSemester" placeholder="XSYZ" class="input-semester" />
     <button @click="addSemester" class="btn">Add Semester</button>
     <br>
-    <button @click="setCurrentSemesters(semesters)" class="btn">Save Current Semesters</button>
+    <button @click="pushSetCurrentSemesters(semesters)" class="btn">Save Current Semesters</button>
     <br>
     <h2>Unverified Reviews</h2>
     <ul>
@@ -64,8 +64,8 @@ const addSemester = () => {
             </v-container>
             
         </v-card>
-            <button @click="verifyReview(review.Id)" class="btn">Verify</button>
-            <button @click="rejectReview(review.Id)" class="btn-remove">Reject</button>
+            <button @click="pushVerifyReview(review.Id)" class="btn">Verify</button>
+            <button @click="pushRejectReview(review.Id)" class="btn-remove">Reject</button>
         </li>
     </ul>
 </main>
