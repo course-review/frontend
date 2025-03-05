@@ -8,8 +8,8 @@ import { fetchCoursesData } from '@/services/api';
 const theme = useTheme()
 const snackbar = ref(false)
 const $router = useRouter()
-const courses = ref<{ label: string; path: string }[]>([
-]);
+const courses = ref<{ label: string; path: string }[]>([]);
+
 fetchCoursesData().then(response => {
   const fetchedCourses = response.data.map(course => ({
     label: `${course.CourseNumber} ${course.CourseName}`,
