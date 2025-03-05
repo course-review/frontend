@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { pushUpdateRating } from '@/services/api';
 import RatingOverview from '../components/RatingOverview.vue'
 import type { Rating } from './Rating.types'
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-const { ratings, editable = false } = defineProps<{ ratings: {[key: string]: Rating}, editable?: boolean }>()
+
+const { ratings, editable = false, isAdd = false, ratingId = -1 } = defineProps<{ ratings: {[key: string]: Rating}, ratingId?: number, editable?: boolean, isAdd?: boolean }>()
 
 const localRatings = ref(ratings)
 
@@ -18,12 +20,16 @@ const ratingCategories: {[key: string]: string} = {
 function updateRating(id: string, value: number) {
   console.log(`API call to update rating '${id}' to: ${value}`)
   localRatings.value[id].rating = value;
+  if (!isAdd) {
+    pushUpdateRating(ratingId, localRatings.value)
+  }
 }
+
 
 function clearAllRatings() {
   console.log('API call to clear all ratings or call updateRating for each rating :)')
   for (const key in localRatings.value) {
-    localRatings.value[key].rating = 0;
+    updateRating(key, 0);
   }
 }
 </script>
