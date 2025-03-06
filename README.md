@@ -59,3 +59,30 @@ npm run test:e2e -- --debug
 ```sh
 npm run lint
 ```
+
+
+
+# todo
+## functionality
+- 3rd party embedding
+  - main page
+  - course pages
+  - ★
+    - U+2605
+  - ⯨
+    - U+2BE8
+  - ☆
+    - U+2606
+
+## stretch goals
+### easy
+- faq page
+- Page with all courses that have reviews or ratings
+- chartjs for stats of tracking
+- check on add page if user already has a review for that course
+
+### harder
+- saving non submitted reviews for later
+- better search: https://github.com/farzher/fuzzysort
+- animations
+- usage tracking

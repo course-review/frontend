@@ -1,18 +1,31 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { useTheme } from 'vuetify'
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { fetchCoursesData } from '@/services/api';
 
 const theme = useTheme()
 const snackbar = ref(false)
 const $router = useRouter()
+const courses = ref<{ label: string; path: string }[]>([]);
+const route = ref($router.currentRoute);
+const addReviewPath = computed(() => {
+  if (route.value.name === 'course' && route.value.params.id) {
+    return `/add?id=${route.value.params.id}`;
+  }
+  return '/add'; // Default path
+});
 
-const courses = [
-  { label: '000-0000-00L', path: '000-0000-00L' },
-  { label: '000-0000-01L', path: '000-0000-01L' },
-  { label: '[NR] ja hallo erst mal', path: '000-0000-02L' }
-]
+fetchCoursesData().then(response => {
+  const fetchedCourses = response.data.map(course => ({
+    label: `${course.CourseNumber} ${course.CourseName}`,
+    path: course.CourseNumber
+  }));
+  courses.value.push(...fetchedCourses);
+});
+
+console.log(courses);
 
 function navigateToPage (path: string) {
   if (path) {
@@ -57,7 +70,7 @@ onMounted(() => {
 
         <v-tooltip location="bottom" text="Add a Review">
           <template v-slot:activator="{ props }">
-            <v-btn variant="text" icon="mdi-invoice-text-plus-outline" v-bind="props" />
+            <v-btn variant="text" icon="mdi-invoice-text-plus-outline" :to=addReviewPath v-bind="props" />
           </template>
         </v-tooltip>
 
@@ -76,7 +89,7 @@ onMounted(() => {
         CourseReview is neither supported by ETH nor by VSETH, its a private initiative run by Students.
       </v-snackbar>
 
-      <RouterView />
+      <router-view :key="$route.fullPath"></router-view>
     </v-main>
 
     <v-footer :elevation="2" :app="true" class="d-flex flex-column text-center">

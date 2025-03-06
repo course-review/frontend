@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
-
+import envCompatible from 'vite-plugin-env-compatible';
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import nightwatchPlugin from 'vite-plugin-nightwatch'
@@ -9,6 +9,7 @@ export default defineConfig({
   plugins: [
     vue(),
     nightwatchPlugin(),
+    envCompatible()
   ],
   resolve: {
     alias: {
