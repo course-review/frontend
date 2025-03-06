@@ -12,6 +12,9 @@ const selectedSemester = ref("")
 const courses =  ref<{ label: string; number: string }[]>([])
 const selectedCourseNumber = ref("")
 
+const url = new URL(window.location.href);
+const course = url.searchParams.get('id') || '';
+selectCourse(course)
 
 onMounted(async () => {
     const response = await fetchSemesters();
@@ -37,7 +40,7 @@ function selectCourse(number: string) {
 <template>
     <v-card class="mx-auto" max-width="500">
         <v-container>
-            <v-autocomplete label="Course" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="number" @update:modelValue="selectCourse" />
+            <v-autocomplete label="Course" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="number" v-model="selectedCourseNumber" @update:modelValue="selectCourse" />
             <v-col>
                 <div>
                     <v-card-text style="float: left;">Taken in Semester:</v-card-text>
