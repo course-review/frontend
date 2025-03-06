@@ -7,7 +7,7 @@ import StarRating from '../components/StarRating.vue';
 
 const semesters = ref<string[]>([])
 const reviewAdd = ref("")
-const starRatingsAdd = ref(starRatings)
+const starRatingsAdd = starRatings
 const selectedSemester = ref("")
 const courses =  ref<{ label: string; number: string }[]>([])
 const selectedCourseNumber = ref("")

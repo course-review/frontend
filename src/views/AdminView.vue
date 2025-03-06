@@ -2,7 +2,7 @@
 import { fetchSemesters, fetchUnverified, pushRejectReview, pushSetCurrentSemesters, pushSetModerator, type UnverifiedReview, pushVerifyReview } from '@/services/api';
 import { onMounted, ref } from 'vue';
 import TextReview from '@/components/TextReview.vue';
-const user = ""
+const user = ref('')
 
 const semesters = ref<string[]>([])
 const newSemester = ref<string>('')

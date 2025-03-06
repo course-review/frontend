@@ -1,4 +1,4 @@
-<script lang="ts">
+<script setup lang="ts">
 import router, { decodeToken } from '@/router';
 import { useCookies } from 'vue3-cookies';
 

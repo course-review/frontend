@@ -20,8 +20,7 @@ export interface UserReview {
   Semester: string;
   CourseNumber: string;
   CourseName: string;
-  ReviewId: number;
-  RatingId: number;
+  Evaluationid: number;
 }
 
 export interface UnverifiedReview {

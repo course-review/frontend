@@ -4,8 +4,6 @@ import UserReviewAndRating from '@/components/UserReviewAndRating.vue'
 
 <template>
 
-    <h1>User</h1>
-
     <UserReviewAndRating />
 
 </template>

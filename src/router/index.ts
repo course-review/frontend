@@ -58,17 +58,17 @@ const router = createRouter({
 
 export async function decodeToken(token: string): Promise<tokenProperties> {
   const publicKeyString = import.meta.env.VITE_JWT_PUBLIC_KEY;
-    const publicKeyBuffer = Uint8Array.from(atob(publicKeyString), c => c.charCodeAt(0));
-    const publicKey = await crypto.subtle.importKey(
-      'spki',
-      publicKeyBuffer,
-      {
-        name: 'RSASSA-PKCS1-v1_5',
-        hash: 'SHA-256'
-      },
-      true,
-      ['verify']
-    );
+  const publicKeyBuffer = Uint8Array.from(atob(publicKeyString), c => c.charCodeAt(0));
+  const publicKey = await crypto.subtle.importKey(
+    'spki',
+    publicKeyBuffer,
+    {
+      name: 'RSASSA-PKCS1-v1_5',
+      hash: 'SHA-256'
+    },
+    true,
+    ['verify']
+  );
 
     // Verify the token
     const { payload } = await jwtVerify(token, publicKey);

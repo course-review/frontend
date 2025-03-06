@@ -73,8 +73,6 @@ npm run lint
     - U+2BE8
   - ☆
     - U+2606
-### comfort
-- having course selected when pressing on add button on a course page
 
 ## stretch goals
 ### easy

@@ -29,11 +29,6 @@ function handleSemesterChange(value: string | null, ReviewId: number) {
     console.log(value)
 }
 
-function handleRatingChange(id: string, value: number) {
-    // console.log(starRatings.value[id].rating)
-    // starRatings.value[id].rating = value 
-    console.log(id, value)
-}
 </script>
 
 <template v-if="finishedLoadingReviews">
@@ -46,10 +41,10 @@ function handleRatingChange(id: string, value: number) {
             <v-col>
                 <div>
                     <v-card-text style="float: left;">Taken in Semester:</v-card-text>
-                    <v-select density="compact" variant="underlined" max-width="100px" :items="semesters" :label="review.Semester" @update:model-value="(value) => handleSemesterChange(value, review.ReviewId)" />
+                    <v-select density="compact" variant="underlined" max-width="100px" :items="semesters" :label="review.Semester" @update:model-value="(value: string | null) => handleSemesterChange(value, review.Evaluationid)" />
                 </div>
-                <StarRating :ratings="starRatings" :id="review.RatingId" :editable="true" @update-rating="handleRatingChange"/>
-                <TextReview :review="review.Review" :review-id="review.ReviewId" :editable="true" />
+                <StarRating :ratings="starRatings" :rating-id="review.Evaluationid" :editable="true" />
+                <TextReview :review="review.Review" :review-id="review.Evaluationid" :editable="true" />
             </v-col>
         </v-container>
         
