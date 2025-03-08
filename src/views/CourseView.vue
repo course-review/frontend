@@ -35,7 +35,9 @@ onMounted(async () => {
   ratings.value = response.data;
   
   const ratingKeys = ['Difficulty', 'Engaging', 'Effort', 'Recommended', 'Resources'];
-
+  if (ratings.value == null) {
+    return;
+  }
   for (const rating of ratings.value) {
     ratingKeys.forEach(key => {
       const tempRating = starRatings[key];
@@ -94,6 +96,10 @@ function insertIntoStarRatings(ratingDetail: RatingDetails, stars: number) {
       <!-- for each review in reviews do TextReview -->
       <div v-for="(review, index) in reviews" :key="'Review' + index">
         <TextReview :review="review.Review" :semester="review.Semester" />     
+      </div>
+      <div v-if="reviews == null">
+        <p>We do not have a review for this course yet.</p>
+        <p>Would be nice if you add one if you took this course.</p>
       </div>
   </v-main>
 </template>

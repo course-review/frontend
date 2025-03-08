@@ -8,6 +8,9 @@ const stats = ref<Stats>();
 onMounted(async () => {
   const response = await fetchLatestReviews();
   latestReviews.value = response.data;
+  if (latestReviews.value === null) {
+    latestReviews.value = [];
+  }
 });
 
 onMounted(async () => {

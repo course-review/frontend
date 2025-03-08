@@ -12,6 +12,8 @@ export interface Course {
 
 export interface UserReview {
   Review: string;
+  Published: { Status: string; Valid: boolean };
+  RequestedChanges: string;
   Recommended: number;
   Engaging: number;
   Difficulty: number;
@@ -25,10 +27,12 @@ export interface UserReview {
 
 export interface UnverifiedReview {
   Review: string;
+  OldReview: string;
+  RequestedChanges: string;
   CourseNumber: string;
   CourseName: string;
   UserID: string;
-  Id: number;
+  ID: number;
 }
 
 export interface Review {
@@ -51,6 +55,9 @@ const API: AxiosInstance = axios.create({
 });
 
 const token = cookies.get('jwt');
+if (token == null) {
+  //todo popup to reload page
+}
 
 // Define the function with proper typing
 export const fetchCoursesData = async (): Promise<AxiosResponse<Course[]>> => {
@@ -86,49 +93,59 @@ export const fetchUserData = async (): Promise<AxiosResponse<UserReview[]>> => {
 }
 
 export const fetchUnverified = async (): Promise<AxiosResponse<UnverifiedReview[]>> => {
-  return API.get<UnverifiedReview[]>(`/moderator/getUnverifiedReviews?token=${token}`);
+  return API.get<UnverifiedReview[]>(`/auth/moderator/getUnverifiedReviews?token=${token}`);
 }
 
 export const pushVerifyReview = async (id: number): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/moderator/verifyReview?id=${id}&token=${token}`);
+  const data = {id: id, token: token};
+  console.log(data);
+  return API.post<string>('/auth/moderator/verifyReview', data);
 }
 
-export const pushRejectReview = async (id: number): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/moderator/rejectReview?id=${id}&token=${token}`);
+export const pushRejectReview = async (id: number, requested_changes: string): Promise<AxiosResponse<string>> => {
+  const data = {id: id, token: token, requested_changes: requested_changes};
+  return API.post<string>('/auth/moderator/rejectReview', data);
 }
 
 export const pushSetCurrentSemesters = async (semester: string[]): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/moderator/setCurrentSemester?list=${semester}&token=${token}`);
+  const data = {list: semester, token: token};
+  return API.post<string>('/auth/moderator/setCurrentSemester', data);
 }
 
 export const pushSetModerator = async (user: string): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/admin/setModerator?user=${user}&token=${token}`);
+  const data = {user: user, token: token};
+  return API.post<string>('/auth/admin/setModerator', data);
 }
 
 export const pushUpdateReview = async (id: number, review: string): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/auth/updateReview?id=${id}&review=${review}&token=${token}`);
+  const data = {id: id, review: review, token: token};
+  return API.post<string>('/auth/updateReview', data);
 }
 
 export const pushDeleteReview = async (id: number): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/auth/deleteReview?id=${id}&token=${token}`);
+  const data = {id: id, token: token};
+  return API.post<string>('/auth/deleteReview', data);
 }
 
 export const pushUpdateRating = async (id: number, rating: { [key: string]: Rating }): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/auth/updateRating?id=${id}${ratingToRequest(rating)}&token=${token}`);
+  const data = {id: id, token: token, ...ratingToRequest(rating)};
+  return API.post<string>('/auth/updateRating', data);
 }
 
 export const pushNewReview = async (review: string, courseNumber: string, userID: string, semester: string, rating: { [key: string]: Rating}): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/auth/newReview?review=${review}&courseNumber=${courseNumber}&userID=${userID}&semester=${semester}${ratingToRequest(rating)}&token=${token}`);
+  const data = {review: review, courseNumber: courseNumber, token: token, semester: semester, ...ratingToRequest(rating)};
+  return API.post<string>("/auth/insertReview", data);
 }
 
 export const pushSemesterChange = async (semester: string, id: number): Promise<AxiosResponse<string>> => {
-  return API.post<string>(`/auth/updateSemester?Semester=${semester}&id=${id}&token=${token}`);
+  const data = {semester: semester, id: id, token: token};
+  return API.post<string>('/auth/updateSemester', data); 
 }
 
-function ratingToRequest(rating: { [key: string]: Rating }): string {
-  return `&recommended=${rating['Recommended'].rating}&engaging=${rating['Engaging'].rating}&difficulty=${rating['Difficulty'].rating}&effort=${rating['Effort'].rating}&resources=${rating['Resources'].rating}`;
+function ratingToRequest(rating: { [key: string]: Rating }) {
+  const data = {recommended: rating['Recommended'].rating, engaging: rating['Engaging'].rating, difficulty: rating['Difficulty'].rating, effort: rating['Effort'].rating, resources: rating['Resources'].rating};
+  return data;
 }
-
 
 export const starRatings: {[key: string]: Rating} = {
   Recommended: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},

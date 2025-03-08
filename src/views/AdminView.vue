@@ -10,7 +10,10 @@ const reviews = ref<UnverifiedReview[]>([])
 
 onMounted(async () => {
     const response = await fetchSemesters();
-    semesters.value = response.data;    
+    semesters.value = response.data;
+    if (semesters.value === null) {
+        semesters.value = [];
+    }
 })
 
 onMounted(async () => {
@@ -23,10 +26,28 @@ const removeSemester = (index: number) => {
 }
 
 const addSemester = () => {
+    console.log(newSemester.value);
     if (newSemester.value.trim() !== '') {
         semesters.value.push(newSemester.value);
         newSemester.value = '';
     }
+}
+async function setModeratorClick() {
+    console.log("Set moderator")
+    const response = await pushSetModerator(user.value)
+    if (response.status == 200) {
+        user.value = ''
+    }
+    //todo show error
+}
+async function verifyClick(id: number, index: number) {
+    await pushVerifyReview(id);
+    reviews.value.splice(index, 1);
+}
+async function rejectClick(id: number, requestedChanges: string, index: number) {
+    console.log(requestedChanges);
+    await pushRejectReview(id, requestedChanges);
+    reviews.value.splice(index, 1);
 }
 
 </script>
@@ -35,7 +56,7 @@ const addSemester = () => {
 <main>
     <h2>Moderator</h2>
     <input v-model="user" placeholder="numbers@ethz.ch" class="input-semester" />
-    <button @click="pushSetModerator(user)" class="btn">Set Moderator</button>
+    <button @click="setModeratorClick" class="btn">Set Moderator</button>
     <br>
 
     <h2>Semesters</h2>
@@ -54,18 +75,18 @@ const addSemester = () => {
     <ul>
         <li v-for="(review, index) in reviews" :key="index" class="semester-item">
             <v-card>
-            <v-card-title>{{ review.CourseName }}</v-card-title>
-            <v-card-subtitle> {{ review.CourseNumber }}</v-card-subtitle>
-            <v-card-subtitle> {{ review.UserID }}</v-card-subtitle>
-            <v-container>
-                <v-col>
-                    <TextReview :review="review.Review" :editable="false" />
-                </v-col>
-            </v-container>
-            
-        </v-card>
-            <button @click="pushVerifyReview(review.Id)" class="btn">Verify</button>
-            <button @click="pushRejectReview(review.Id)" class="btn-remove">Reject</button>
+                <v-card-title>{{ review.CourseName }}</v-card-title>
+                <v-card-subtitle> {{ review.CourseNumber }}</v-card-subtitle>
+                <v-card-subtitle> {{ review.UserID }}</v-card-subtitle>
+                <v-container>
+                    <v-col>
+                        <TextReview :review="review.Review" :editable="false" />
+                    </v-col>
+                </v-container>
+            </v-card>
+            <input v-model="review.RequestedChanges" placeholder="Too aggressive or stuff idk" class="input-semester" />
+            <button @click="verifyClick(review.ID, index)" class="btn">Verify</button>
+            <button @click="rejectClick(review.ID, review.RequestedChanges, index)" class="btn-remove">Reject</button>
         </li>
     </ul>
 </main>

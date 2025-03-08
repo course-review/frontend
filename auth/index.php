@@ -4,7 +4,7 @@
         $headers = ['alg'=>'RS256','typ'=>'JWT'];
         $headers_encoded = base64url_encode(json_encode($headers));
 
-        $payload = ['exp'=>time()+3600, 'student'=>true, 'unique_id'=>$_SERVER["uniqueID"]];
+        $payload = ['exp'=>time() + 3600 * 24 * 3, 'student'=>true, 'unique_id'=>$_SERVER["uniqueID"]];
         $payload_encoded = base64url_encode(json_encode($payload));
 
         $key_file = fopen('key.txt', 'r');

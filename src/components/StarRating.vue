@@ -1,13 +1,21 @@
 <script setup lang="ts">
-import { pushUpdateRating } from '@/services/api';
+import { pushUpdateRating, type UserReview } from '@/services/api';
 import RatingOverview from '../components/RatingOverview.vue'
 import type { Rating } from './Rating.types'
 import { ref } from 'vue';
 
 
-const { ratings, editable = false, isAdd = false, ratingId = -1 } = defineProps<{ ratings: {[key: string]: Rating}, ratingId?: number, editable?: boolean, isAdd?: boolean }>()
+const { ratings, editable = false, isAdd = false, ratingId = -1, review} = defineProps<{ ratings: {[key: string]: Rating}, ratingId?: number, editable?: boolean, isAdd?: boolean, review?: UserReview }>()
 
 const localRatings = ref(ratings)
+
+if (review != undefined) {
+    localRatings.value["Recommended"].rating = review.Recommended
+    localRatings.value["Engaging"].rating = review.Engaging
+    localRatings.value["Difficulty"].rating = review.Difficulty
+    localRatings.value["Effort"].rating = review.Effort
+    localRatings.value["Resources"].rating = review.Resources
+}
 
 const ratingCategories: {[key: string]: string} = {
   Recommended: "I would recommend it",

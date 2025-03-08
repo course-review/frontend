@@ -74,6 +74,8 @@ npm run lint
   - ☆
     - U+2606
 
+rewrite all post requests
+
 ## stretch goals
 ### easy
 - faq page
@@ -83,6 +85,52 @@ npm run lint
 
 ### harder
 - saving non submitted reviews for later
+  - localstorage with course id
 - better search: https://github.com/farzher/fuzzysort
 - animations
 - usage tracking
+
+
+
+no foreign key of user on course_eval_map
+  needs a check on every query if user exists / add user to db
+  only on add review, add rating (could be fine)
+
+requested changes
+
+logging still needs to be done
+
+Done:
+
+remove from users:
+  logged out
+  deactivated
+  user_name
+
+after review edit:
+ if published
+  set old_review to current_review
+  set current_review to new review
+if not published
+  set current_review to new review
+
+Uniqueness on eval_id on table ratings and reviews
+unique (user_id, course_id) on table course_eval_map
+
+
+
+doing right now:
+~~submitting requested changes doesnt work~~
+~~resubmiting rejected doesnt work~~\
+~~resubmit then click edit, old review is shown\~~
+~~on top still says rejected~~
+can set below 1, doesnt actually set it in the backend but looks as is in the front end, no good
+
+
+still gotta test:
+submitting new review: 
+  just rating
+  just semester
+  just review
+
+editing rating

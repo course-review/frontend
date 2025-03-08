@@ -5,6 +5,7 @@ import type { Rating } from './Rating.types';
 const { editable = false, reviewId = -1, review, isAdd = false, ratings, semester, courseNumber } = defineProps<{review: string, reviewId?: number, semester?: string, editable?: boolean, isAdd?: boolean, courseNumber?: string, ratings?: {[key: string]: Rating}}>()
 
 const isEditing = ref(false);
+const old_review = ref(review);
 const reviewText = ref(review);
 
 if (isAdd) {
@@ -14,26 +15,29 @@ if (isAdd) {
 function toggleEdit() {
   isEditing.value = !isEditing.value;
   //reset value when canceling
-  reviewText.value = review;
+  reviewText.value = old_review.value;
 }
 
-function submitEdit() {
-  pushUpdateReview(reviewId, reviewText.value);
+async function submitEdit() {
+  await pushUpdateReview(reviewId, reviewText.value);
+  old_review.value = reviewText.value;
   isEditing.value = false;
 }
 
 function deleteReview() {
   console.log('Delete review')
+  //todo: show confirmation dialog
   pushDeleteReview(reviewId)
 }
 
-function submitNewReview() {
+async function submitNewReview() {
     console.log("Submit new review")
     if (ratings == undefined || semester == undefined || courseNumber == undefined) {
       console.log("Ratings undefined")
     } else {
       const userId = "";
-      pushNewReview(reviewText.value, courseNumber, userId, semester, ratings);
+      await pushNewReview(reviewText.value, courseNumber, userId, semester, ratings);
+      //todo something here: clear ratings, review, semester, courseNumber and show text
     }
 }
 </script>
