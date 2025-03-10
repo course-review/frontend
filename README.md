@@ -73,8 +73,8 @@ npm run lint
     - U+2BE8
   - ☆
     - U+2606
-
-rewrite all post requests
+~~pop ups after button clicks to show it happened~~
+~~rewrite all post requests~~
 
 ## stretch goals
 ### easy
@@ -82,6 +82,7 @@ rewrite all post requests
 - Page with all courses that have reviews or ratings
 - chartjs for stats of tracking
 - check on add page if user already has a review for that course
+- make pop ups look better
 
 ### harder
 - saving non submitted reviews for later
@@ -124,13 +125,15 @@ doing right now:
 ~~resubmiting rejected doesnt work~~\
 ~~resubmit then click edit, old review is shown\~~
 ~~on top still says rejected~~
-can set below 1, doesnt actually set it in the backend but looks as is in the front end, no good
 
+~~clear search once used~~ works somewhat, only clears once you click away
 
-still gotta test:
-submitting new review: 
-  just rating
-  just semester
-  just review
+~~check if eval_map gets deleted if both review and rating are deleted~~
+~~check if edit review after review was deleted works~~
 
-editing rating
+~~clear after add submit~~
+
+~~clear text after review Delete~~
+
+~~clear whole thing after rating or review delete if all gone (a bit harder)~~
+~~pass reload function to review and rating?~~

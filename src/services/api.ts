@@ -23,6 +23,7 @@ export interface UserReview {
   CourseNumber: string;
   CourseName: string;
   Evaluationid: number;
+  Rating: {[key: string]: Rating};
 }
 
 export interface UnverifiedReview {
@@ -142,15 +143,22 @@ export const pushSemesterChange = async (semester: string, id: number): Promise<
   return API.post<string>('/auth/updateSemester', data); 
 }
 
+export const pushDeleteRating = async (id: number): Promise<AxiosResponse<string>> => {
+  const data = {id: id, token: token};
+  return API.post<string>('/auth/deleteRating', data);
+}
+
 function ratingToRequest(rating: { [key: string]: Rating }) {
   const data = {recommended: rating['Recommended'].rating, engaging: rating['Engaging'].rating, difficulty: rating['Difficulty'].rating, effort: rating['Effort'].rating, resources: rating['Resources'].rating};
   return data;
 }
 
-export const starRatings: {[key: string]: Rating} = {
-  Recommended: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
-  Engaging: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
-  Difficulty: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
-  Effort: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
-  Resources: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
+export const defaultStarRatings =  () :{[key: string]: Rating} => {
+  return {
+    Recommended: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
+    Engaging: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
+    Difficulty: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
+    Effort: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
+    Resources: {rating: 0, details: {oneStarRatings: 0, twoStarRatings: 0, threeStarRatings: 0, fourStarRatings: 0, fiveStarRatings: 0}},
+  }
 }

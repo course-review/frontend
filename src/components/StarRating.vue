@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import { pushUpdateRating, type UserReview } from '@/services/api';
+import { pushDeleteRating, pushUpdateRating } from '@/services/api';
 import RatingOverview from '../components/RatingOverview.vue'
 import type { Rating } from './Rating.types'
-import { ref } from 'vue';
+import { computed, nextTick } from 'vue';
 
 
-const { ratings, editable = false, isAdd = false, ratingId = -1, review} = defineProps<{ ratings: {[key: string]: Rating}, ratingId?: number, editable?: boolean, isAdd?: boolean, review?: UserReview }>()
+const { ratings, editable = false, isAdd = false, ratingId = -1, reloadData} = defineProps<{ ratings: {[key: string]: Rating}, ratingId?: number, editable?: boolean, isAdd?: boolean, reloadData?: () => any }>()
 
-const localRatings = ref(ratings)
-
-if (review != undefined) {
-    localRatings.value["Recommended"].rating = review.Recommended
-    localRatings.value["Engaging"].rating = review.Engaging
-    localRatings.value["Difficulty"].rating = review.Difficulty
-    localRatings.value["Effort"].rating = review.Effort
-    localRatings.value["Resources"].rating = review.Resources
-}
+const localRatings = computed(() => ratings);
 
 const ratingCategories: {[key: string]: string} = {
   Recommended: "I would recommend it",
@@ -34,10 +26,17 @@ function updateRating(id: string, value: number) {
 }
 
 
-function clearAllRatings() {
-  console.log('API call to clear all ratings or call updateRating for each rating :)')
+async function clearAllRatings() {
+  if (!isAdd) {
+    await pushDeleteRating(ratingId)
+    if (reloadData != undefined) {
+      nextTick(() => {
+        reloadData()
+      });
+    }
+  }
   for (const key in localRatings.value) {
-    updateRating(key, 0);
+    localRatings.value[key].rating = 0;
   }
 }
 </script>
@@ -46,7 +45,7 @@ function clearAllRatings() {
   <v-card max-width="500">
     <div v-for="(label, key) in ratingCategories" :key="key">
       <v-card-text style="float: left;">{{ label }}:</v-card-text>
-      <v-rating :model-value="Math.round(localRatings[key].rating*2)/2 " color="amber" half-increments hover :readonly="!editable" @update:modelValue="updateRating(key as string, $event as number)"/>
+      <v-rating :model-value="localRatings[key].rating " color="amber" hover :readonly="!editable" @update:modelValue="updateRating(key as string, $event as number)"/>
       <RatingOverview v-if="!editable" :ratingInformation="ratings[key]"/>
     </div>
     <v-card-actions v-if="editable">

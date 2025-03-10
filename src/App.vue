@@ -16,6 +16,7 @@ const addReviewPath = computed(() => {
   }
   return '/add'; // Default path
 });
+const selectedCourse = ref<string | null>(null);
 
 fetchCoursesData().then(response => {
   const fetchedCourses = response.data.map(course => ({
@@ -29,6 +30,7 @@ console.log(courses);
 
 function navigateToPage (path: string) {
   if (path) {
+    selectedCourse.value = null; // Reset the autocomplete search
     $router.push("/course/" + path)
   }
 }
@@ -66,7 +68,7 @@ onMounted(() => {
         <router-link to="/" exact class="unstyled-link" style="font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.5em;">CourseReview</router-link>
       </v-app-bar-title>
       <template v-slot:append>
-        <v-autocomplete variant="underlined" label="Course Search" width="264px" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="path" @update:modelValue="navigateToPage" />
+        <v-autocomplete variant="underlined" label="Course Search" width="264px" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="path" :model-value="selectedCourse" @update:modelValue="navigateToPage" />
 
         <v-tooltip location="bottom" text="Add a Review">
           <template v-slot:activator="{ props }">

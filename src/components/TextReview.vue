@@ -1,12 +1,23 @@
 <script setup lang="ts">
 import { pushDeleteReview, pushNewReview, pushUpdateReview } from '@/services/api';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import type { Rating } from './Rating.types';
-const { editable = false, reviewId = -1, review, isAdd = false, ratings, semester, courseNumber } = defineProps<{review: string, reviewId?: number, semester?: string, editable?: boolean, isAdd?: boolean, courseNumber?: string, ratings?: {[key: string]: Rating}}>()
+import { nextTick } from 'vue';
+const { editable = false, reviewId = -1, review, isAdd = false, ratings, semester, courseNumber, reloadData } = defineProps<{review?: string, reviewId?: number, semester?: string, editable?: boolean, isAdd?: boolean, courseNumber?: string, ratings?: {[key: string]: Rating}, reloadData?: () => any}>()
+
+const showSnackbar = ref(false);
+
+const emit = defineEmits(['update:review']);
+
+const reviewText = computed({
+  get: () => review || '',
+  set: (newValue) => {
+    emit('update:review', newValue);
+  }
+});
 
 const isEditing = ref(false);
-const old_review = ref(review);
-const reviewText = ref(review);
+const old_review = ref(reviewText.value); 
 
 if (isAdd) {
   isEditing.value = true;
@@ -22,12 +33,18 @@ async function submitEdit() {
   await pushUpdateReview(reviewId, reviewText.value);
   old_review.value = reviewText.value;
   isEditing.value = false;
+  showSnackbar.value = true;
 }
 
-function deleteReview() {
-  console.log('Delete review')
-  //todo: show confirmation dialog
-  pushDeleteReview(reviewId)
+async function deleteReview() {
+  await pushDeleteReview(reviewId)
+  reviewText.value = "";
+  showSnackbar.value = true;
+  if (reloadData != undefined) {
+    nextTick(() => {
+      reloadData()
+    });
+  }
 }
 
 async function submitNewReview() {
@@ -37,15 +54,23 @@ async function submitNewReview() {
     } else {
       const userId = "";
       await pushNewReview(reviewText.value, courseNumber, userId, semester, ratings);
+      reviewText.value = "";
+      showSnackbar.value = true;
       //todo something here: clear ratings, review, semester, courseNumber and show text
+      if (reloadData != undefined) {
+        reloadData()
+      }
     }
 }
 </script>
 <template>
+  <v-snackbar v-model="showSnackbar" timeout="5000" timer location="top right" max-width="410px">
+      Review submitted successfully!
+  </v-snackbar>
   <v-card max-width="500" class="border mt-2">
     <v-card-text>
       <div v-if="!editable">
-        <div v-for="(block, index) in review.split('\n')" :key="index">
+        <div v-for="(block, index) in reviewText.split('\n')" :key="index">
           {{ block }}
           <br v-if="block.length == 0" />
         </div>

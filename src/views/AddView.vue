@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { fetchCoursesData, fetchSemesters } from '@/services/api';
 import { onMounted, ref } from 'vue';
-import { starRatings } from '@/services/api';
+import { defaultStarRatings } from '@/services/api';
 import TextReview from '../components/TextReview.vue'
 import StarRating from '../components/StarRating.vue';
 
 const semesters = ref<string[]>([])
 const reviewAdd = ref("")
-const starRatingsAdd = starRatings
+const starRatingsAdd = ref(defaultStarRatings())
 const selectedSemester = ref("")
 const courses =  ref<{ label: string; number: string }[]>([])
 const selectedCourseNumber = ref("")
@@ -34,6 +34,13 @@ onMounted(async () => {
 function selectCourse(number: string) {
     selectedCourseNumber.value = number
 }
+function blankPage() {
+    console.log("Blank page")
+    starRatingsAdd.value = defaultStarRatings()
+    console.log(starRatingsAdd.value)
+    selectedSemester.value = ""
+    selectedCourseNumber.value = ""
+}
 </script>
 
 
@@ -47,8 +54,8 @@ function selectCourse(number: string) {
                     <v-select density="compact" variant="underlined" max-width="100px" :items="semesters" v-model="selectedSemester" />
                 </div>
                 <StarRating v-model:ratings="starRatingsAdd" :editable="true" :is-add="true"/>
-                <TextReview v-model:review="reviewAdd" :editable="true" :is-add="true" :ratings="starRatingsAdd" :semester="selectedSemester" :course-number="selectedCourseNumber"/>
+                <TextReview v-model:review="reviewAdd" :editable="true" :is-add="true" :ratings="starRatingsAdd" :semester="selectedSemester" :course-number="selectedCourseNumber" :reload-data="blankPage"/>
             </v-col>
-        </v-container>  
+        </v-container>
     </v-card>
 </template>
