@@ -18,17 +18,20 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      component: HomeView,
+      meta: { requiresAuth: false }
     },
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue')
+      component: () => import('../views/AboutView.vue'),
+      meta: { requiresAuth: false }
     },
     {
       path: '/course/:id',
       name: 'course',
-      component: CourseView
+      component: CourseView,
+      meta: { requiresAuth: false }
     },
     {
       path: '/user',

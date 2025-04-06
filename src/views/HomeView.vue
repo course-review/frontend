@@ -1,9 +1,26 @@
 <script setup lang="ts">
 import { fetchLatestReviews, fetchStats, type Course, type Stats} from '@/services/api';
 import { onMounted, ref } from 'vue';
+import slideData from '@/assets/slides.json'
 
 const latestReviews = ref<Course[]>([]);
 const stats = ref<Stats>();
+
+const slides = ref([
+  {
+    "title": "Dummy",
+    "description": "Something broke",
+    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "image": "",
+    "color": "pink accent-1",
+    "links": [
+      {
+        "link-text": "Google",
+        "link": "https://www.google.com"
+      }
+    ]
+  }
+])
 
 onMounted(async () => {
   const response = await fetchLatestReviews();
@@ -11,33 +28,52 @@ onMounted(async () => {
   if (latestReviews.value === null) {
     latestReviews.value = [];
   }
-});
 
-onMounted(async () => {
-  const response = await fetchStats();
-  stats.value = response.data;
+  const statsResponse = await fetchStats();
+  stats.value = statsResponse.data;
+
+  slides.value = slideData
 });
 </script>
 
 <template>
   <main>
-    <h1>Welcome!</h1>
-    Here you can add and read reviews about your courses at ETHZ.<br>
-    We have currently have <b>{{ stats?.TotalCourses }}</b> courses reviewed with <b>{{ stats?.TotalReviews }}</b> reviews.<br>
-    <br>    
-    Here are also the results of the Teaching Evaluations you get every semester for exams and courses:<br>
-    <a href="https://ergebnisseub.sp.ethz.ch/" target="_blank">https://ergebnisseub.sp.ethz.ch/</a><br>
-    <br>
-    We also made a Browser Extensions for VVZ:<br>
-    <a href="https://chrome.google.com/webstore/detail/vvz-coursereview/pjgjdmehkhpdhlpdgfbbpgekfajlhhgn" target="_blank">Chrome</a><br>
-    <a href="https://addons.mozilla.org/en-GB/firefox/addon/vvz-coursereview/" target="_blank">Firefox</a><br>
-    Makes it nicer to use VVZ and lets you quickly look at the reviews and ratings of a course inside VVZ.<br>
-    <br>
-    <h2>Latest Reviews</h2>
-    <ul>
-      <li v-for="course in latestReviews.slice(0, 10)" :key="course.CourseNumber">
-        <router-link :to="'/course/' + course.CourseNumber">{{ course.CourseName }}</router-link>
-      </li>
-    </ul>
+    <v-carousel cycle hide-delimiter-background show-arrows="hover">
+      <v-carousel-item v-for="(slide, index) in slides" :key="index" >
+        <v-sheet :color="slide.color" height="100vh" width="100vw" >
+          <v-card-title>{{ slide.title }}</v-card-title>
+          <v-card-subtitle>{{ slide.description }}</v-card-subtitle>
+          <v-card-text>{{ slide.text }}</v-card-text>
+
+          <div v-if="slide.links.length >= 0">
+            <v-btn v-for="link in slide.links" :key="link['link-text']" prepend-icon="mdi-link-variant" :href="link.link" target="_blank" color="white">{{ link['link-text'] }}</v-btn>
+          </div>
+        </v-sheet>
+      </v-carousel-item>
+    </v-carousel>
+
+    <div class="d-flex justify-start">
+      <v-card class="ma-2" max-width="400" elevation="2" style="margin-top: 20px;">
+        <v-card-title>Latest Reviews</v-card-title>
+        <v-list density="compact">
+          <v-list-item v-for="course in latestReviews.slice(0, 10)" :key="course.CourseNumber" :to="'/course/' + course.CourseNumber">{{ course.CourseName }}</v-list-item>
+        </v-list>
+      </v-card>
+
+      <v-card class="h-50 ma-2" max-width="400" elevation="2" style="margin-top: 20px;">
+        <v-card-title>Stats</v-card-title>
+
+        <div class="d-flex justify-center mb-4">
+          <v-card color="grey lighten-4 mx-2">
+            <v-card-title>{{ stats?.TotalReviews }}</v-card-title>
+            <v-card-subtitle>Reviews</v-card-subtitle>
+          </v-card>
+          <v-card color="grey lighten-4 mx-2">
+            <v-card-title>{{ stats?.TotalCourses }}</v-card-title>
+            <v-card-subtitle>Courses with reviews</v-card-subtitle>
+          </v-card>
+        </div>
+      </v-card>
+    </div>
   </main>
 </template>

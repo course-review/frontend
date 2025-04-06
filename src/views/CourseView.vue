@@ -5,7 +5,6 @@ import type { RatingDetails } from '@/components/Rating.types'
 import { onMounted, ref } from 'vue';
 import { fetchReviews, type Review, type Rating2, fetchRatings, defaultStarRatings} from '@/services/api';
 import { fetchName } from '@/services/api';
-// const loremipsum: string = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque mi odio, maximus et felis at, cursus congue velit. Integer vitae viverra ligula. Phasellus in lectus velit. In ut interdum elit. Integer ultrices scelerisque turpis. Nullam eros nulla, ultricies tincidunt arcu et, imperdiet rhoncus nisl. Duis in lobortis quam. In in dui tortor. Mauris magna erat, cursus a pellentesque vel, suscipit ac felis. Phasellus suscipit mi vel leo posuere, ac ullamcorper nisi sodales. \nMorbi sed metus eu odio suscipit bibendum. Suspendisse semper ornare lorem eget mollis. Fusce molestie efficitur condimentum. Duis nec imperdiet magna. Vestibulum at justo id neque pulvinar elementum auctor id sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse potenti. \n\n\nPellentesque sollicitudin eu quam id placerat. Suspendisse viverra scelerisque ipsum in euismod. Curabitur convallis porttitor ante vel tempus. Sed a sem sed mi sollicitudin egestas. Fusce eget turpis eleifend, pretium elit sit amet, egestas lectus. Nulla in leo maximus, bibendum est nec, bibendum neque. Suspendisse vel lectus condimentum, luctus odio non, hendrerit erat. Nunc pulvinar, ex id vehicula vulputate, justo magna faucibus neque, vitae sollicitudin neque nulla et massa. Ut quis libero porta, egestas ipsum quis, tincidunt nibh. Duis feugiat leo eu lorem facilisis bibendum. Aliquam erat volutpat. Sed sit amet auctor purus. Curabitur non leo lectus. Suspendisse quis lorem id arcu viverra consequat eget efficitur enim. Duis sed nibh sed tortor vulputate eleifend."
 
 const reviews = ref<Review[]>([]);
 const ratings = ref<Rating2[]>([]);
@@ -84,16 +83,15 @@ function insertIntoStarRatings(ratingDetail: RatingDetails, stars: number) {
 </script>
 
 <template>
-  
-  <v-main>
-      <h1>{{ $route.params.id }}: {{ courseName }}</h1>
-      
-      <v-divider></v-divider>
-      
+    <h1 class="ma-4">{{ $route.params.id }}: {{ courseName }}</h1>
+    
+    <v-divider class="border-opacity-25 mx-3"></v-divider>
+    
+    <div class="d-flex flex-column align-center justify-center my-5">
       <template v-if="finishedLoadingRatings">
         <StarRating :ratings="starRatings"/>
       </template>
-      
+    
       <!-- for each review in reviews do TextReview -->
       <div v-for="(review, index) in reviews" :key="'Review' + index">
         <TextReview :review="review.Review" :semester="review.Semester" />     
@@ -102,5 +100,5 @@ function insertIntoStarRatings(ratingDetail: RatingDetails, stars: number) {
         <p>We do not have a review for this course yet.</p>
         <p>Would be nice if you add one if you took this course.</p>
       </div>
-  </v-main>
+    </div>
 </template>

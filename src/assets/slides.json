@@ -1,0 +1,40 @@
+[
+    {
+      "title": "VVZ Extension",
+      "description": "Course Review in VVZ",
+      "text": "As switching between Course Review and VVZ is a pain, we created this extension to make it easier. It shows the reviews for courses directly in VVZ.",
+      "image": "",
+      "color": "green-lighten-3",
+      "links": [
+        {
+          "link-text": "Chrome",
+          "link": "https://chrome.google.com/webstore/detail/vvz-coursereview/pjgjdmehkhpdhlpdgfbbpgekfajlhhgn"
+        },
+        {
+            "link-text": "Firefox",
+            "link": "https://addons.mozilla.org/en-GB/firefox/addon/vvz-coursereview/"
+          }
+      ]
+    },
+    {
+      "title": "Teaching Evaluation",
+      "description": "Those pesky mails you get after every exam",
+      "text": "Have you ever wondered what LET does with your feedback? Apart from giving it to the lecturer, part of it can be access publically. If you are curoius about the results, click the link below.",
+      "image": "",
+      "color": "cyan-lighten-3",
+      "links": [
+        {
+            "link-text": "ETH SharePoint",
+            "link": "https://ergebnisseub.sp.ethz.ch/"
+        }
+      ]
+    },
+    {
+      "title": "Contribute",
+      "description": "Get involved :)",
+      "text": "If you have feature suggestions, found a bug or want to contribute, dont hesitate to contact us. Or go to the project github page directly.",
+      "image": "",
+      "color": "blue-lighten-2",
+      "links": []
+    }
+]

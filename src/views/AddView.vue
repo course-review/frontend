@@ -18,7 +18,7 @@ selectCourse(course)
 
 onMounted(async () => {
     const response = await fetchSemesters();
-    semesters.value = response.data;
+    semesters.value = response.data == null ? [] : response.data;
     semesters.value.unshift("");
 })
 
@@ -45,7 +45,7 @@ function blankPage() {
 
 
 <template>
-    <v-card class="mx-auto" max-width="500">
+    <v-card class="mx-auto mt-5" max-width="500">
         <v-container>
             <v-autocomplete label="Course" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="number" v-model="selectedCourseNumber" @update:modelValue="selectCourse" />
             <v-col>

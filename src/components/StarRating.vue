@@ -42,12 +42,20 @@ async function clearAllRatings() {
 </script>
 
 <template>
-  <v-card max-width="500">
-    <div v-for="(label, key) in ratingCategories" :key="key">
-      <v-card-text style="float: left;">{{ label }}:</v-card-text>
-      <v-rating :model-value="localRatings[key].rating " color="amber" hover :readonly="!editable" @update:modelValue="updateRating(key as string, $event as number)"/>
-      <RatingOverview v-if="!editable" :ratingInformation="ratings[key]"/>
-    </div>
+  <v-card max-width="500"  class="border">
+    <v-container v-for="(label, key) in ratingCategories" :key="key" class="pa-2">
+      <v-row no-gutters>
+        <v-col class="flex-grow-1 flex-shrink-0">
+          <v-card-text style="float: left; margin: auto;" class="pa-0 align-baseline">{{ label }}:</v-card-text>
+        </v-col>
+        <v-col>
+          <v-rating class="ml-6 flex-shrink-1" :model-value="localRatings[key].rating " color="amber" :size="30" hover :readonly="!editable" @update:modelValue="updateRating(key as string, $event as number)"/>
+        </v-col>
+        <v-col class="flex-grow-0 flex-shrink-1">
+          <RatingOverview v-if="!editable" :ratingInformation="ratings[key]"/>
+        </v-col>
+      </v-row>
+    </v-container>
     <v-card-actions v-if="editable">
       <v-btn variant="tonal" color="red" @click.stop="clearAllRatings">Clear all Ratings</v-btn>
     </v-card-actions>

@@ -18,7 +18,7 @@ function sumRatings(rds: RatingDetails | null): number {
 <template>
   <v-menu open-on-hover location="end" >
     <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" icon="mdi-information" variant="text" density="compact" />
+      <v-btn v-bind="props" icon="mdi-information-outline" variant="text" density="compact" size="small" />
     </template>
 
     <v-card class="d-flex flex-column mx-auto py-8" elevation="10" height="500" width="360">
