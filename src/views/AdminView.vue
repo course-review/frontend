@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { fetchSemesters, fetchUnverified, pushRejectReview, pushSetCurrentSemesters, pushSetModerator, type UnverifiedReview, pushVerifyReview } from '@/services/api';
+import { fetchSemesters, fetchUnverified, pushRejectReview, pushSetCurrentSemesters, pushSetModerator, type UnverifiedReview, pushVerifyReview, pushscrapeCourses } from '@/services/api';
 import { onMounted, ref } from 'vue';
 import TextReview from '@/components/TextReview.vue';
 const user = ref('')
 
 const semesters = ref<string[]>([])
 const newSemester = ref<string>('')
+const scrapeSemester = ref<string>('')
 const reviews = ref<UnverifiedReview[]>([])
 
 onMounted(async () => {
@@ -31,6 +32,11 @@ const addSemester = () => {
         semesters.value.push(newSemester.value);
         newSemester.value = '';
     }
+}
+const scrape = () => {
+    console.log(scrapeSemester.value);
+    pushscrapeCourses(scrapeSemester.value);
+    //todo some way to show progress
 }
 async function setModeratorClick() {
     console.log("Set moderator")
@@ -70,6 +76,9 @@ async function rejectClick(id: number, requestedChanges: string, index: number) 
     <button @click="addSemester" class="btn">Add Semester</button>
     <br>
     <button @click="pushSetCurrentSemesters(semesters)" class="btn">Save Current Semesters</button>
+    <br>
+    <input v-model="scrapeSemester" placeholder="20XZ(S|W)" class="input-semester" />
+    <button @click="scrape" class="btn">Scrape Semester</button>
     <br>
     <h2>Unverified Reviews</h2>
     <ul>

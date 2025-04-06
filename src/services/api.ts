@@ -147,6 +147,10 @@ export const pushDeleteRating = async (id: number): Promise<AxiosResponse<string
   const data = {id: id, token: token};
   return API.post<string>('/auth/deleteRating', data);
 }
+export const pushscrapeCourses = async (semester: string): Promise<AxiosResponse<string>> => {
+  const data = {semester: semester, token: token};
+  return API.post<string>('/auth/moderator/scrapeCourses', data);
+}
 
 function ratingToRequest(rating: { [key: string]: Rating }) {
   const data = {recommended: rating['Recommended'].rating, engaging: rating['Engaging'].rating, difficulty: rating['Difficulty'].rating, effort: rating['Effort'].rating, resources: rating['Resources'].rating};
