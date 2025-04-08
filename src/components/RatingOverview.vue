@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import type { Rating } from './Rating.types'
+import type { Rating, RatingDetails } from './Rating.types'
 import { ref } from 'vue'
 
-defineProps<{ratingDetails: Rating}>()
+defineProps<{ratingInformation: Rating}>()
 const totalRatings = ref(0)
 const ratingCountList = ref([0, 0, 0, 0, 0])
 
-function sumRatings(rds: Rating): number {
-  totalRatings.value = Object.values(rds).reduce((sum, rating) => sum + rating, 0) - rds.rating
-  ratingCountList.value = Object.values(rds).slice(1)
+function sumRatings(rds: RatingDetails | null): number {
+  if (rds === null) return 0
+  
+  totalRatings.value = Object.values(rds).reduce((sum, rating) => sum + rating, 0)
+  ratingCountList.value = Object.values(rds).slice()
   return totalRatings.value
 }
 </script>
@@ -16,7 +18,7 @@ function sumRatings(rds: Rating): number {
 <template>
   <v-menu open-on-hover location="end" >
     <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" icon="mdi-information" variant="text" density="compact" />
+      <v-btn v-bind="props" icon="mdi-information-outline" variant="text" density="compact" size="small" />
     </template>
 
     <v-card class="d-flex flex-column mx-auto py-8" elevation="10" height="500" width="360">
@@ -24,13 +26,11 @@ function sumRatings(rds: Rating): number {
 
       <div class="d-flex align-center flex-column my-auto">
         <div class="text-h2 mt-5">
-          {{ ratingDetails.rating }}
+          {{ ratingInformation.rating }}
           <span class="text-h6 ml-n3">/5</span>
         </div>
 
-        <v-rating :model-value="ratingDetails.rating" color="amber" half-increments />
-
-        <div class="px-3">{{ sumRatings(ratingDetails) }}</div>
+        <div class="px-3">{{ sumRatings(ratingInformation.details) }}</div>
       </div>
 
       <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
