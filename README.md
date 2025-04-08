@@ -1,3 +1,7 @@
+# Work in progress
+This is still a WIP, the main branch can already be viewed under https://coursereview.ch/  
+Adding data would not get saved and will be lost. The current version is still under https://n.ethz.ch/~lteufelbe/coursereview/
+
 # my-vue-app
 
 This template should help get you started developing with Vue 3 in Vite.
@@ -92,7 +96,7 @@ npm run lint
 - usage tracking
 
 
-
+## other
 no foreign key of user on course_eval_map
   needs a check on every query if user exists / add user to db
   only on add review, add rating (could be fine)
@@ -100,40 +104,3 @@ no foreign key of user on course_eval_map
 requested changes
 
 logging still needs to be done
-
-Done:
-
-remove from users:
-  logged out
-  deactivated
-  user_name
-
-after review edit:
- if published
-  set old_review to current_review
-  set current_review to new review
-if not published
-  set current_review to new review
-
-Uniqueness on eval_id on table ratings and reviews
-unique (user_id, course_id) on table course_eval_map
-
-
-
-doing right now:
-~~submitting requested changes doesnt work~~
-~~resubmiting rejected doesnt work~~\
-~~resubmit then click edit, old review is shown\~~
-~~on top still says rejected~~
-
-~~clear search once used~~ works somewhat, only clears once you click away
-
-~~check if eval_map gets deleted if both review and rating are deleted~~
-~~check if edit review after review was deleted works~~
-
-~~clear after add submit~~
-
-~~clear text after review Delete~~
-
-~~clear whole thing after rating or review delete if all gone (a bit harder)~~
-~~pass reload function to review and rating?~~
