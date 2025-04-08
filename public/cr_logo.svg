@@ -34,6 +34,13 @@
      inkscape:current-layer="layer1" />
   <defs
      id="defs1" />
+  <style>
+    @media (prefers-color-scheme: dark) {
+      path {
+        fill: white;
+      }
+    }
+  </style>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
