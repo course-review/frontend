@@ -64,25 +64,46 @@ onMounted(() => {
 <template>
   <v-app>
     <v-app-bar :elevation="2">
-      <v-app-bar-title>
-        <router-link to="/" exact class="unstyled-link" style="font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.5em;">CourseReview</router-link>
-      </v-app-bar-title>
+      <v-app-bar-title style="margin-left: 10px;">
+        <div v-if="$vuetify.display.smAndUp">
+          <router-link to="/" exact class="unstyled-link" style="font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.5em;">CourseReview</router-link>
+        </div>
+        <div v-else>
+          <router-link to="/" exact class="unstyled-link" style="font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.5em; padding-left: 0px;">CR</router-link>
+        </div>
+        </v-app-bar-title>
       <template v-slot:append>
+        <!-- maybe dont have the search just that specific pixel value? -->
         <v-autocomplete variant="underlined" label="Course Search" width="264px" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="path" :model-value="selectedCourse" @update:modelValue="navigateToPage" />
 
-        <v-tooltip location="bottom" text="Add a Review">
-          <template v-slot:activator="{ props }">
-            <v-btn variant="text" icon="mdi-invoice-text-plus-outline" :to=addReviewPath v-bind="props" />
-          </template>
-        </v-tooltip>
-
-        <v-tooltip location="bottom" text="Your Reviews">
-          <template v-slot:activator="{ props }">
-            <v-btn variant="text" icon="mdi-account" to="/user" v-bind="props" />
-          </template>
-        </v-tooltip>
-
-        <v-btn @click="toggleTheme" :icon="theme.global.current.value.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night'"></v-btn>
+        <div v-if="$vuetify.display.smAndUp">
+          <v-tooltip location="bottom" text="Add a Review">
+            <template v-slot:activator="{ props }">
+              <v-btn variant="text" icon="mdi-invoice-text-plus-outline" :to=addReviewPath v-bind="props" />
+            </template>
+          </v-tooltip>
+          
+          <v-tooltip location="bottom" text="Your Reviews">
+            <template v-slot:activator="{ props }">
+              <v-btn variant="text" icon="mdi-account" to="/user" v-bind="props" />
+            </template>
+          </v-tooltip>
+          
+          <v-btn @click="toggleTheme" :icon="theme.global.current.value.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night'"></v-btn>
+        </div>
+        <div v-else>
+          <v-menu>
+            <template v-slot:activator="{ props }">
+              <v-btn icon="mdi-menu" v-bind="props" />
+            </template>
+            <v-list>
+              <!-- <v-list-item to="/" prepend-icon="mdi-home" title="Home" />  todo: not sure if having a home button can be helpful in there too  -->
+              <v-list-item :to="addReviewPath" prepend-icon="mdi-invoice-text-plus-outline" title="Add a Review" />
+              <v-list-item to="/user" prepend-icon="mdi-account" title="Your Reviews" />
+              <v-list-item @click="toggleTheme" :title="theme.global.current.value.dark ? 'Light Mode' : 'Dark Mode'" :prepend-icon="theme.global.current.value.dark ? 'mdi-white-balance-sunny' : 'mdi-weather-night'" />
+            </v-list>
+          </v-menu>
+        </div>
       </template>
     </v-app-bar>
 
