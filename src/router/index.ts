@@ -105,7 +105,7 @@ router.beforeEach(async (to, from, next) => {
     const isAuthenticated = await studentAuth();
     if (!isAuthenticated) {
       //redirect to login page -> n.ethz.ch
-      const redirectUrl = `${window.location.origin}/tokenset${window.location.pathname}&n=${Date.now()}`;
+      const redirectUrl = `${window.location.origin}/tokenset`;
       const originUrl = to.fullPath;
       const authorizationUrl = "https://n.ethz.ch/~lteufelbe/auth";
       window.location.href = `${authorizationUrl}?redirect=${encodeURI(redirectUrl)}&origin=${encodeURI(originUrl)}`;
