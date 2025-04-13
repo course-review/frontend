@@ -67,7 +67,7 @@ async function submitNewReview() {
   <v-snackbar v-model="showSnackbar" timeout="5000" timer location="top right" max-width="410px">
       Review submitted successfully!
   </v-snackbar>
-  <v-card max-width="500" class="border mt-2">
+  <v-card max-width="500" class="border">
     <v-card-text>
       <div v-if="!editable">
         <div v-for="(block, index) in reviewText.split('\n')" :key="index">
@@ -85,10 +85,12 @@ async function submitNewReview() {
     </v-card-text>
     <v-card-subtitle v-if="!editable">{{ semester }}</v-card-subtitle>
     <v-card-actions v-if="!isAdd && editable">
-      <v-btn variant="tonal" color="orange" @click.stop="toggleEdit">{{ isEditing ? 'Cancel' : 'Edit' }}</v-btn>
-      <v-btn v-if="isEditing" variant="tonal" color="green" @click.stop="submitEdit">Submit</v-btn>
-      <v-btn variant="tonal" color="red" @click.stop="deleteReview">Delete</v-btn>
+      <v-btn variant="flat" color="orange-lighten-1" @click.stop="toggleEdit">{{ isEditing ? 'Cancel' : 'Edit' }}</v-btn>
+      <v-btn v-if="isEditing" variant="flat" color="green-lighten-1" @click.stop="submitEdit">Submit</v-btn>
+      <v-btn variant="flat" color="red-lighten-1" @click.stop="deleteReview">Delete</v-btn>
+    </v-card-actions>
+    <v-card-actions v-if="isAdd">
+      <v-btn style="margin-top: 10px;" variant="flat" color="green-lighten-1" @click.stop="submitNewReview">Submit</v-btn>
     </v-card-actions>
   </v-card>
-  <v-btn v-if=isAdd style="margin-top: 10px;" variant="tonal" color="green" @click.stop="submitNewReview">Submit</v-btn>
 </template>

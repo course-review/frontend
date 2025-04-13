@@ -8,11 +8,13 @@
       "links": [
         {
           "link-text": "Chrome",
-          "link": "https://chrome.google.com/webstore/detail/vvz-coursereview/pjgjdmehkhpdhlpdgfbbpgekfajlhhgn"
+          "link": "https://chrome.google.com/webstore/detail/vvz-coursereview/pjgjdmehkhpdhlpdgfbbpgekfajlhhgn",
+          "icon": "mdi-link-variant"
         },
         {
-            "link-text": "Firefox",
-            "link": "https://addons.mozilla.org/en-GB/firefox/addon/vvz-coursereview/"
+          "link-text": "Firefox",
+          "link": "https://addons.mozilla.org/en-GB/firefox/addon/vvz-coursereview/",
+          "icon": "mdi-link-variant"
           }
       ]
     },
@@ -24,8 +26,9 @@
       "color": "cyan-lighten-3",
       "links": [
         {
-            "link-text": "ETH SharePoint",
-            "link": "https://ergebnisseub.sp.ethz.ch/"
+          "link-text": "ETH SharePoint",
+          "link": "https://ergebnisseub.sp.ethz.ch/",
+          "icon": "mdi-link-variant"
         }
       ]
     },
@@ -35,6 +38,12 @@
       "text": "If you have feature suggestions, found a bug or want to contribute, dont hesitate to contact us. Or go to the project github page directly.",
       "image": "",
       "color": "blue-lighten-2",
-      "links": []
+      "links": [
+        {
+          "link-text": "Github",
+          "link": "https://github.com/orgs/course-review/",
+          "icon": "mdi-github"
+        }
+      ]
     }
 ]

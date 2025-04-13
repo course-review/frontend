@@ -25,7 +25,6 @@ function updateRating(id: string, value: number) {
   }
 }
 
-
 async function clearAllRatings() {
   if (!isAdd) {
     await pushDeleteRating(ratingId)
@@ -42,7 +41,7 @@ async function clearAllRatings() {
 </script>
 
 <template>
-  <v-card max-width="500"  class="border">
+  <v-card max-width="500" class="border">
     <v-container v-for="(label, key) in ratingCategories" :key="key" class="pa-2">
       <v-row no-gutters>
         <v-col class="flex-grow-1 flex-shrink-0">
@@ -57,7 +56,7 @@ async function clearAllRatings() {
       </v-row>
     </v-container>
     <v-card-actions v-if="editable">
-      <v-btn variant="tonal" color="red" @click.stop="clearAllRatings">Clear all Ratings</v-btn>
+      <v-btn variant="flat" color="red-lighten-1" @click.stop="clearAllRatings">Clear all Ratings</v-btn>
     </v-card-actions>
   </v-card>
 </template>

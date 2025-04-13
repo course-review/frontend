@@ -61,6 +61,10 @@ if (token == null) {
 }
 
 // Define the function with proper typing
+export const apiHealth = async (): Promise<AxiosResponse<string>> => {
+  return API.get<string>('/');
+};
+
 export const fetchCoursesData = async (): Promise<AxiosResponse<Course[]>> => {
   return API.get<Course[]>('/courses');
 };

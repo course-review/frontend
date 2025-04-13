@@ -26,8 +26,6 @@ fetchCoursesData().then(response => {
   courses.value.push(...fetchedCourses);
 });
 
-console.log(courses);
-
 function navigateToPage (path: string) {
   if (path) {
     selectedCourse.value = null; // Reset the autocomplete search
@@ -107,7 +105,7 @@ onMounted(() => {
       </template>
     </v-app-bar>
 
-    <v-main>
+    <v-main max-width="1024px" class="mx-auto">
       <v-snackbar v-model="snackbar" timeout="5000" timer location="top right" max-width="410px">
         CourseReview is neither supported by ETH nor by VSETH, its a private initiative run by Students.
       </v-snackbar>
@@ -118,7 +116,7 @@ onMounted(() => {
     <v-footer :elevation="2" :app="true" class="d-flex flex-column text-center">
       <div>
         <v-btn variant="text" icon="mdi-github" href="https://github.com/orgs/course-review/" target="_blank" density="comfortable" />
-        <v-btn variant="text" icon="mdi-email-fast-outline" density="comfortable" />
+        <v-btn variant="text" icon="mdi-email-fast-outline" href="mailto:contact@coursereview.ch" density="comfortable" />
         <v-btn variant="text" icon="mdi-information-outline" to="/about" density="comfortable" />
       </div>
 
