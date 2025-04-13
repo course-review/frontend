@@ -48,7 +48,7 @@ function blankPage() {
         <v-container>
             <v-autocomplete label="Course" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="number" v-model="selectedCourseNumber" @update:modelValue="selectCourse" />
             <v-row>
-                <v-select density="comfortable" variant="underlined" max-width="170px" hint="Taken in Semester" persistent-hint class="ml-3" :items="semesters" @update:model-value="(value: string | null) => handleSemesterChange(value, review.Evaluationid)" />
+                <v-select density="comfortable" variant="underlined" max-width="170px" hint="Taken in Semester" persistent-hint class="ml-3" :items="semesters" v-model="selectedSemester" />
             </v-row>
             <v-row>
                 <v-col>
