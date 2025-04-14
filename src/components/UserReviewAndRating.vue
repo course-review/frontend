@@ -47,7 +47,7 @@ function handleSemesterChange(value: string | null, ReviewId: number) {
 
 <template v-if="finishedLoadingReviews">
     <div v-if="UserData == null">
-        <v-card class="mx-auto" max-width="500" style="margin-top: 10px;">
+        <v-card class="mx-auto" style="margin-top: 10px;">
             <v-card-title>No reviews found.</v-card-title>
             <v-card-text>You haven't reviewed anything yet :O</v-card-text>
             

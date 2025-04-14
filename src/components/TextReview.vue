@@ -67,7 +67,7 @@ async function submitNewReview() {
   <v-snackbar v-model="showSnackbar" timeout="5000" timer location="top right" max-width="410px">
       Review submitted successfully!
   </v-snackbar>
-  <v-card max-width="500" class="border">
+  <v-card class="border">
     <v-card-text>
       <div v-if="!editable">
         <div v-for="(block, index) in reviewText.split('\n')" :key="index">

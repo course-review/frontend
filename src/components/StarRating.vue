@@ -41,13 +41,14 @@ async function clearAllRatings() {
 </script>
 
 <template>
-  <v-card max-width="500" class="border">
+  <v-card class="border">
     <v-container v-for="(label, key) in ratingCategories" :key="key" class="pa-2">
       <v-row no-gutters>
         <v-col class="flex-grow-1 flex-shrink-0">
           <v-card-text style="float: left; margin: auto;" class="pa-0 align-baseline">{{ label }}:</v-card-text>
         </v-col>
         <v-col>
+          <!-- todo: clearable field might be of interest -->
           <v-rating class="ml-6 flex-shrink-1" :model-value="localRatings[key].rating " color="amber" :size="30" hover :readonly="!editable" @update:modelValue="updateRating(key as string, $event as number)"/>
         </v-col>
         <v-col class="flex-grow-0 flex-shrink-1">
