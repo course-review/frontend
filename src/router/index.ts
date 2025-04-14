@@ -107,7 +107,7 @@ router.beforeEach(async (to, from, next) => {
       //redirect to login page -> n.ethz.ch
       const redirectUrl = `${window.location.origin}/tokenset`;
       const originUrl = to.fullPath;
-      const authorizationUrl = "https://n.ethz.ch/~lteufelbe/auth";
+      const authorizationUrl = "https://n.ethz.ch/~lteufelbe/auth"; //todo set as env var
       window.location.href = `${authorizationUrl}?redirect=${encodeURI(redirectUrl)}&origin=${encodeURI(originUrl)}`;
     }
     next();
