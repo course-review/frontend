@@ -19,6 +19,12 @@ const addReviewPath = computed(() => {
 const selectedCourse = ref<string | null>(null);
 
 fetchCoursesData().then(response => {
+  const data = response.data;
+
+  if (!Array.isArray(data)) {
+    return;
+  }
+
   const fetchedCourses = response.data.map(course => ({
     label: `${course.CourseNumber} ${course.CourseName}`,
     path: course.CourseNumber

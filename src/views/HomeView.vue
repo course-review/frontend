@@ -18,8 +18,8 @@ const stats = ref<Stats>();
 const slides = ref([
   {
     "title": "CourseReview Unavailable",
-    "description": "If this message persists, please contact us so we can fix it.",
-    "text": "Looks like our API took a coffee break ☕. Try again soon!",
+    "subtitle": "Looks like our API took a coffee break ☕. Try again soon!",
+    "text": "If this message persists, please contact us so we can fix it.",
     "image": "",
     "color": "red-darken-4",
     "links": [
@@ -34,7 +34,8 @@ const slides = ref([
 
 onMounted(async () => {
   try {
-    await apiHealth();
+    let response = await apiHealth();
+    console.console.log(response);
     slides.value = slideData;
   } catch (error) {
     return;
@@ -55,17 +56,18 @@ onMounted(async () => {
 
 <template>
   <div v-if="showSlides">
-    <!-- <v-carousel cycle hide-delimiter-background interval="10000" show-arrows="hover" class="mt-10"> -->
     <v-carousel hide-delimiter-background show-arrows="hover" class="mt-10">
       <v-carousel-item v-for="(slide, index) in slides" :key="index" >
         <v-sheet :color="slide.color" height="100%" class="pa-10" :class="slideStyle.slide">
-          <h1>{{ slide.title }}</h1>
-          <h3>{{ slide.description }}</h3>
-          <p>{{ slide.text }}</p>
-          
-          <div class="slide_buttons">
-            <v-btn v-for="link in slide.links" :key="link['link-text']" :prepend-icon="link.icon" :href="link.link" target="_blank" color="white">{{ link['link-text'] }}</v-btn>
-          </div>
+          <v-card height="100%" class="d-flex flex-column" flat variant="text">
+            <v-card-title>{{ slide.title }}</v-card-title>
+            <v-card-subtitle>{{ slide.subtitle }}</v-card-subtitle>
+            <v-card-text>{{ slide.text }}</v-card-text>
+
+            <v-card-actions class="px-4">
+              <v-btn v-for="link in slide.links" :key="link['link-text']" :prepend-icon="link.icon" :href="link.link" target="_blank" color="white">{{ link['link-text'] }}</v-btn>
+            </v-card-actions>
+          </v-card>
         </v-sheet>
       </v-carousel-item>
     </v-carousel>
