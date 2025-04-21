@@ -34,8 +34,7 @@ const slides = ref([
 
 onMounted(async () => {
   try {
-    let response = await apiHealth();
-    console.console.log(response);
+    await apiHealth();
     slides.value = slideData;
   } catch (error) {
     return;
