@@ -2,6 +2,7 @@
 import { fetchSemesters, fetchUnverified, pushRejectReview, pushSetCurrentSemesters, pushSetModerator, type UnverifiedReview, pushVerifyReview, pushscrapeCourses } from '@/services/api';
 import { onMounted, ref } from 'vue';
 import TextReview from '@/components/TextReview.vue';
+import CheckAuth from '@/components/CheckAuth.vue'
 const user = ref('')
 
 const semesters = ref<string[]>([])
@@ -59,6 +60,7 @@ async function rejectClick(id: number, requestedChanges: string, index: number) 
 </script>
 
 <template>
+<CheckAuth />
 <main>
     <h2>Moderator</h2>
     <input v-model="user" placeholder="numbers@ethz.ch" class="input-semester" />

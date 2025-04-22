@@ -73,13 +73,12 @@ export async function decodeToken(token: string): Promise<tokenProperties> {
     ['verify']
   );
 
-    // Verify the token
-    const { payload } = await jwtVerify(token, publicKey);
-    return payload as tokenProperties;
-  }
+  // Verify the token
+  const { payload } = await jwtVerify(token, publicKey);
+  return payload as tokenProperties;
+}
 
-// Function to verify the JWT
-async function studentAuth() {
+export const studentAuth = async (): Promise<boolean> => {
   const token = cookies.get('jwt');
 
   if (!token) {

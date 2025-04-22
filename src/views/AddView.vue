@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue';
 import { defaultStarRatings } from '@/services/api';
 import TextReview from '../components/TextReview.vue'
 import StarRating from '../components/StarRating.vue';
+import CheckAuth from '@/components/CheckAuth.vue'
 
 const semesters = ref<string[]>([])
 const reviewAdd = ref("")
@@ -44,6 +45,7 @@ function blankPage() {
 </script>
 
 <template>
+    <CheckAuth />
     <v-card class="mx-auto mt-5">
         <v-container>
             <v-autocomplete label="Course" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="number" v-model="selectedCourseNumber" @update:modelValue="selectCourse" />
