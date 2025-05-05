@@ -55,3 +55,9 @@
   <!-- ideas submission? Public? -->
    <!-- bug report: mail? -->
 </template>
+
+<style scoped>
+  details {
+    margin-bottom: 10px;
+  }
+</style>
