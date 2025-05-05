@@ -44,11 +44,11 @@
       </details>
       <details>
         <summary>How can I report a bug?</summary>
-        <p></p>
+        <p>Email us or open an issue on GitHub.</p>
       </details>
       <details>
         <summary>How can I report a review?</summary>
-        <p>?</p>
+        <p>Currently there is no system but you can just email us.</p>
       </details>
     </div>
   </div>
