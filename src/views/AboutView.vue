@@ -39,7 +39,7 @@
       </details>
       <details>
         <summary>What data do you save from me?</summary>
-        <p>When you submit a rating or review we save your UniqueId (one of many). See here: <a href="https://n.ethz.ch/shibboleth-test/show" target="_blank"></a> </p>
+        <p>When you submit a rating or review we save your UniqueId (one of many). See here: <a href="https://n.ethz.ch/shibboleth-test/show" target="_blank">https://n.ethz.ch/shibboleth-test/show</a> </p>
         <p>We do this such that you can edit anything after submission and also that we can block people if they spam us.</p>
       </details>
       <details>
