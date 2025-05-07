@@ -97,25 +97,47 @@ function insertIntoStarRatings(ratingDetail: RatingDetails, stars: number) {
 
 
     <v-container>
-      <v-row>
-        <v-col>
-          <template v-if="finishedLoadingRatings">
-            <StarRating :ratings="starRatings"/>
+  <v-row :align="$vuetify.display.smAndUp ? 'start' : 'stretch'" dense>
+    <v-col :cols="12" :md="6">
+      <template v-if="finishedLoadingRatings">
+        <StarRating :ratings="starRatings" />
+      </template>
+      <template v-else>
+        <v-skeleton-loader class="mx-auto" type="card" :loading="!finishedLoadingRatings" width="400" height="200" />
+      </template>
+    </v-col>
+
+    <v-col :cols="12" :md="6">
+      <template v-if="finishedLoadingReviews && reviews.length > 0">
+        <!-- Desktop View -->
+        <v-virtual-scroll
+          v-if="!$vuetify.display.smAndDown"
+          height="80vh"
+          :items="reviews"
+        >
+          <template v-slot="{ item: review }">
+            <TextReview :review="review.Review" :semester="review.Semester" />
+            <v-divider class="border-opacity-0 mt-3" />
           </template>
-          <template v-else>
-            <v-skeleton-loader class="mx-auto" type="card" :loading="!finishedLoadingRatings" width="400" height="200" />
-          </template>
-        </v-col>
-        <v-col>
-          <v-virtual-scroll height="80vh" :items="reviews" v-if="finishedLoadingReviews && reviews.length > 0">
-            <template  v-slot="{ item: review }">
-              <TextReview :review="review.Review" :semester="review.Semester" />
-              <v-divider class="border-opacity-0 mt-3"/>
-            </template>
-          </v-virtual-scroll>
-          <v-skeleton-loader v-else-if="!finishedLoadingReviews" class="mx-auto" type="card" :loading="!finishedLoadingRatings" width="400" height="200" />
-          <p v-else class="text-center">No reviews available for this course.</p>
-        </v-col>
-      </v-row>
-    </v-container>
+        </v-virtual-scroll>
+
+        <!-- Mobile View -->
+        <div v-else v-for="(review, index) in reviews" :key="index">
+          <TextReview :review="review.Review" :semester="review.Semester" />
+          <v-divider class="border-opacity-0 mt-3" />
+        </div>
+      </template>
+      <v-skeleton-loader
+        v-else-if="!finishedLoadingReviews"
+        class="mx-auto"
+        type="card"
+        :loading="!finishedLoadingRatings"
+        width="400"
+        height="200"
+      />
+      <p v-else class="text-center">No reviews available for this course.</p>
+    </v-col>
+  </v-row>
+</v-container>
+
 </template>
