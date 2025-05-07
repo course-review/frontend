@@ -11,6 +11,6 @@ cookies.set('jwt', jwt, new Date(props.exp * 1000), "/");
 // redirect to get value of origin
 
 const origin = url.searchParams.get('origin') || '';
-router.push(origin);
+router.replace(origin);
 
 </script>

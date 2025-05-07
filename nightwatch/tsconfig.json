@@ -4,6 +4,7 @@
     "composite": true,
     "noEmit": true,
     "tsBuildInfoFile": "../node_modules/.tmp/tsconfig.nightwatch.tsbuildinfo",
+    "resolveJsonModule": true,
 
     "target": "ESNext",
     "module": "esnext",
@@ -16,7 +17,7 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["../node_modules/@nightwatch/**/*", "../src/components/**/*", "../src/services/**/*", "../tests/e2e/**/*"],
+  "include": ["../node_modules/@nightwatch/**/*", "../src/**/*",  "../tests/e2e/**/*"],
   "ts-node": {
     "transpileOnly": true
   },

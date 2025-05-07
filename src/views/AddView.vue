@@ -4,6 +4,7 @@ import { onMounted, ref } from 'vue';
 import { defaultStarRatings } from '@/services/api';
 import TextReview from '../components/TextReview.vue'
 import StarRating from '../components/StarRating.vue';
+import CheckAuth from '@/components/CheckAuth.vue'
 
 const semesters = ref<string[]>([])
 const reviewAdd = ref("")
@@ -43,19 +44,22 @@ function blankPage() {
 }
 </script>
 
-
 <template>
-    <v-card class="mx-auto mt-5" max-width="500">
+    <CheckAuth />
+    <v-card class="mx-auto mt-5">
         <v-container>
             <v-autocomplete label="Course" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="number" v-model="selectedCourseNumber" @update:modelValue="selectCourse" />
-            <v-col>
-                <div>
-                    <v-card-text style="float: left;">Taken in Semester:</v-card-text>
-                    <v-select density="compact" variant="underlined" max-width="100px" :items="semesters" v-model="selectedSemester" />
-                </div>
-                <StarRating v-model:ratings="starRatingsAdd" :editable="true" :is-add="true"/>
-                <TextReview v-model:review="reviewAdd" :editable="true" :is-add="true" :ratings="starRatingsAdd" :semester="selectedSemester" :course-number="selectedCourseNumber" :reload-data="blankPage"/>
-            </v-col>
+            <v-row>
+                <v-select density="comfortable" variant="underlined" max-width="170px" hint="Taken in Semester" persistent-hint class="ml-3" :items="semesters" v-model="selectedSemester" />
+            </v-row>
+            <v-row>
+                <v-col>
+                    <StarRating v-model:ratings="starRatingsAdd" :editable="true" :is-add="true"/>
+                </v-col>
+                <v-col>
+                    <TextReview v-model:review="reviewAdd" :editable="true" :is-add="true" :ratings="starRatingsAdd" :semester="selectedSemester" :course-number="selectedCourseNumber" :reload-data="blankPage"/>
+                </v-col>
+            </v-row>
         </v-container>
     </v-card>
 </template>

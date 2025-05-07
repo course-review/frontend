@@ -20,10 +20,15 @@ const finishedLoadingReviews = ref(false);
 
 onMounted(async () => {
   const response = await fetchReviews(courseNumber);
+  
+  if (response.data == null) {
+    finishedLoadingReviews.value = true;
+    return;
+  }
+
   reviews.value = response.data;
   finishedLoadingReviews.value = true;
 });
-
 
 onMounted(async () => {
   const response = await fetchName(courseNumber);
@@ -36,8 +41,11 @@ onMounted(async () => {
   
   const ratingKeys = ['Difficulty', 'Engaging', 'Effort', 'Recommended', 'Resources'];
   if (ratings.value == null) {
+    finishedLoadingRatings.value = true
+
     return;
   }
+
   for (const rating of ratings.value) {
     ratingKeys.forEach(key => {
       const tempRating = starRatings[key];
@@ -57,7 +65,6 @@ onMounted(async () => {
       rating.rating = Math.round(averageRating * 100) / 100;
     }
   }
-  console.log(starRatings);
   finishedLoadingRatings.value = true
 });
 
@@ -86,19 +93,29 @@ function insertIntoStarRatings(ratingDetail: RatingDetails, stars: number) {
     <h1 class="ma-4">{{ $route.params.id }}: {{ courseName }}</h1>
     
     <v-divider class="border-opacity-25 mx-3"></v-divider>
-    
-    <div class="d-flex flex-column align-center justify-center my-5">
-      <template v-if="finishedLoadingRatings">
-        <StarRating :ratings="starRatings"/>
-      </template>
-    
-      <!-- for each review in reviews do TextReview -->
-      <div v-for="(review, index) in reviews" :key="'Review' + index">
-        <TextReview :review="review.Review" :semester="review.Semester" />     
-      </div>
-      <div v-if="reviews == null">
-        <p>We do not have a review for this course yet.</p>
-        <p>Would be nice if you add one if you took this course.</p>
-      </div>
-    </div>
+  
+
+
+    <v-container>
+      <v-row>
+        <v-col>
+          <template v-if="finishedLoadingRatings">
+            <StarRating :ratings="starRatings"/>
+          </template>
+          <template v-else>
+            <v-skeleton-loader class="mx-auto" type="card" :loading="!finishedLoadingRatings" width="400" height="200" />
+          </template>
+        </v-col>
+        <v-col>
+          <v-virtual-scroll height="80vh" :items="reviews" v-if="finishedLoadingReviews && reviews.length > 0">
+            <template  v-slot="{ item: review }">
+              <TextReview :review="review.Review" :semester="review.Semester" />
+              <v-divider class="border-opacity-0 mt-3"/>
+            </template>
+          </v-virtual-scroll>
+          <v-skeleton-loader v-else-if="!finishedLoadingReviews" class="mx-auto" type="card" :loading="!finishedLoadingRatings" width="400" height="200" />
+          <p v-else class="text-center">No reviews available for this course.</p>
+        </v-col>
+      </v-row>
+    </v-container>
 </template>

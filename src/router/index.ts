@@ -73,13 +73,12 @@ export async function decodeToken(token: string): Promise<tokenProperties> {
     ['verify']
   );
 
-    // Verify the token
-    const { payload } = await jwtVerify(token, publicKey);
-    return payload as tokenProperties;
-  }
+  // Verify the token
+  const { payload } = await jwtVerify(token, publicKey);
+  return payload as tokenProperties;
+}
 
-// Function to verify the JWT
-async function studentAuth() {
+export const studentAuth = async (): Promise<boolean> => {
   const token = cookies.get('jwt');
 
   if (!token) {
@@ -105,9 +104,9 @@ router.beforeEach(async (to, from, next) => {
     const isAuthenticated = await studentAuth();
     if (!isAuthenticated) {
       //redirect to login page -> n.ethz.ch
-      const redirectUrl = `${window.location.origin}/tokenset${window.location.pathname}&n=${Date.now()}`;
+      const redirectUrl = `${window.location.origin}/tokenset`;
       const originUrl = to.fullPath;
-      const authorizationUrl = "https://n.ethz.ch/~lteufelbe/auth";
+      const authorizationUrl = "https://n.ethz.ch/~lteufelbe/auth"; //todo set as env var
       window.location.href = `${authorizationUrl}?redirect=${encodeURI(redirectUrl)}&origin=${encodeURI(originUrl)}`;
     }
     next();
