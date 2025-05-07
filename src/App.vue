@@ -80,7 +80,15 @@ onMounted(() => {
           </v-app-bar-title>
           <div class="d-flex align-center ga-2">
             <!-- maybe dont have the search just that specific pixel value? -->
-            <v-autocomplete variant="underlined" label="Course Search" width="264px" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="path" :model-value="selectedCourse" @update:modelValue="navigateToPage" />
+            <v-autocomplete variant="underlined" label="Course Search" width="264px" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="path" :model-value="selectedCourse" @update:modelValue="navigateToPage">
+              <template v-slot:no-data>
+                <v-list-item>
+                  <v-list-item-title>
+                    No course found.
+                  </v-list-item-title>
+                </v-list-item>
+              </template>
+            </v-autocomplete>
 
             <div v-if="$vuetify.display.smAndUp">
               <v-tooltip location="bottom" text="Add a Review">
