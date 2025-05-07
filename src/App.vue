@@ -74,13 +74,21 @@ onMounted(() => {
             <div v-if="$vuetify.display.smAndUp">
               <router-link to="/" exact class="unstyled-link" style="font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.5em;">CourseReview</router-link>
             </div>
-            <div v-else>
+            <div v-else class="ml-1">
               <router-link to="/" exact class="unstyled-link" style="font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.5em;">CR</router-link>
             </div>
           </v-app-bar-title>
           <div class="d-flex align-center ga-2">
             <!-- maybe dont have the search just that specific pixel value? -->
-            <v-autocomplete variant="underlined" label="Course Search" width="264px" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="path" :model-value="selectedCourse" @update:modelValue="navigateToPage" />
+            <v-autocomplete variant="underlined" label="Course Search" width="264px" append-inner-icon="mdi-magnify" density="comfortable" menu-icon="" auto-select-first :items="courses" item-title="label" item-value="path" :model-value="selectedCourse" @update:modelValue="navigateToPage">
+              <template v-slot:no-data>
+                <v-list-item>
+                  <v-list-item-title>
+                    No course found.
+                  </v-list-item-title>
+                </v-list-item>
+              </template>
+            </v-autocomplete>
 
             <div v-if="$vuetify.display.smAndUp">
               <v-tooltip location="bottom" text="Add a Review">
@@ -127,11 +135,8 @@ onMounted(() => {
           <v-btn variant="text" icon="mdi-github" href="https://github.com/orgs/course-review/" target="_blank" density="comfortable" />
           <v-btn variant="text" icon="mdi-email-fast-outline" href="mailto:contact@coursereview.ch" density="comfortable" />
           <v-btn variant="text" icon="mdi-information-outline" to="/about" density="comfortable" />
+          <strong>CourseReview</strong> — {{ new Date().getFullYear() }} 
         </div>
-
-        <v-divider></v-divider>
-
-        <div>{{ new Date().getFullYear() }} — <strong>CourseReview</strong></div>
       </v-footer>
     </v-container>
   </v-app>
