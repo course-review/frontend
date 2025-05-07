@@ -71,28 +71,32 @@ onMounted(async () => {
       </v-carousel-item>
     </v-carousel>
   
-    <div class="d-flex justify-start mt-4">
-      <v-card class="" max-width="400" elevation="2">
-        <v-card-title>Latest Reviews</v-card-title>
-        <v-list density="compact">
-          <v-list-item v-for="course in latestReviews.slice(0, 10)" :key="course.CourseNumber" :to="'/course/' + course.CourseNumber">{{ course.CourseName }}</v-list-item>
-        </v-list>
-      </v-card>
+      <v-row class="mt-4" justify="start">
+        <v-col cols="12" md class="order-2 order-md-1">
+        <v-card class="ml-2 mr-2" elevation="2">
+          <v-card-title>Latest Reviews</v-card-title>
+          <v-list density="compact">
+            <v-list-item v-for="course in latestReviews.slice(0, 10)" :key="course.CourseNumber" :to="'/course/' + course.CourseNumber">{{ course.CourseName }}</v-list-item>
+          </v-list>
+        </v-card>
+      </v-col>
   
-      <v-card class="h-25 ml-4" max-width="400" elevation="2">
-        <v-card-title>Stats</v-card-title>
-  
-        <div class="d-flex justify-center mb-4">
-          <v-card color="grey lighten-4 mx-2">
-            <v-card-title>{{ stats?.TotalReviews ?? "NaN" }}</v-card-title>
-            <v-card-subtitle>Reviews</v-card-subtitle>
+      <v-col cols="12" md="auto" class="order-1 order-md-2">
+        <v-card class="ml-2 mr-2" elevation="2">
+            <v-card-title>Stats</v-card-title>
+      
+            <div class="d-flex justify-center mb-4">
+              <v-card color="grey lighten-4 mx-2">
+                <v-card-title>{{ stats?.TotalReviews ?? "NaN" }}</v-card-title>
+                <v-card-subtitle>Reviews</v-card-subtitle>
+              </v-card>
+              <v-card color="grey lighten-4 mx-2">
+                <v-card-title>{{ stats?.TotalCourses ?? "NaN" }}</v-card-title>
+                <v-card-subtitle>Courses with reviews</v-card-subtitle>
+              </v-card>
+            </div>
           </v-card>
-          <v-card color="grey lighten-4 mx-2">
-            <v-card-title>{{ stats?.TotalCourses ?? "NaN" }}</v-card-title>
-            <v-card-subtitle>Courses with reviews</v-card-subtitle>
-          </v-card>
-        </div>
-      </v-card>
-    </div>
+        </v-col>
+      </v-row>
   </div>
 </template>
