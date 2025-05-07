@@ -90,7 +90,7 @@ function insertIntoStarRatings(ratingDetail: RatingDetails, stars: number) {
 </script>
 
 <template>
-    <h1 class="ma-4">{{ $route.params.id }}: {{ courseName }}</h1>
+    <h2 class="ma-4">{{ $route.params.id }}: {{ courseName }}</h2>
     
     <v-divider class="border-opacity-25 mx-3"></v-divider>
   
