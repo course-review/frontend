@@ -74,7 +74,7 @@ onMounted(() => {
             <div v-if="$vuetify.display.smAndUp">
               <router-link to="/" exact class="unstyled-link" style="font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.5em;">CourseReview</router-link>
             </div>
-            <div v-else>
+            <div v-else class="ml-1">
               <router-link to="/" exact class="unstyled-link" style="font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.5em;">CR</router-link>
             </div>
           </v-app-bar-title>
