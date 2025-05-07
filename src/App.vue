@@ -127,11 +127,8 @@ onMounted(() => {
           <v-btn variant="text" icon="mdi-github" href="https://github.com/orgs/course-review/" target="_blank" density="comfortable" />
           <v-btn variant="text" icon="mdi-email-fast-outline" href="mailto:contact@coursereview.ch" density="comfortable" />
           <v-btn variant="text" icon="mdi-information-outline" to="/about" density="comfortable" />
+          <strong>CourseReview</strong> — {{ new Date().getFullYear() }} 
         </div>
-
-        <v-divider></v-divider>
-
-        <div>{{ new Date().getFullYear() }} — <strong>CourseReview</strong></div>
       </v-footer>
     </v-container>
   </v-app>
