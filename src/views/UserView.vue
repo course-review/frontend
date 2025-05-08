@@ -4,8 +4,6 @@ import CheckAuth from '@/components/CheckAuth.vue'
 </script>
 
 <template>
-
-    <CheckAuth />
-    <UserReviewAndRating />
-
+  <CheckAuth />
+  <UserReviewAndRating />
 </template>
