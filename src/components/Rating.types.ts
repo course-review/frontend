@@ -1,7 +1,7 @@
 export interface Rating {
-    rating: number
-    details: RatingDetails | null
-  }
+  rating: number
+  details: RatingDetails | null
+}
 
 export interface RatingDetails {
   oneStarRatings: number

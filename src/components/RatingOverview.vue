@@ -2,13 +2,13 @@
 import type { Rating, RatingDetails } from './Rating.types'
 import { ref } from 'vue'
 
-defineProps<{ratingInformation: Rating}>()
+defineProps<{ ratingInformation: Rating }>()
 const totalRatings = ref(0)
 const ratingCountList = ref([0, 0, 0, 0, 0])
 
 function sumRatings(rds: RatingDetails | null): number {
   if (rds === null) return 0
-  
+
   totalRatings.value = Object.values(rds).reduce((sum, rating) => sum + rating, 0)
   ratingCountList.value = Object.values(rds).slice()
   return totalRatings.value
@@ -16,9 +16,15 @@ function sumRatings(rds: RatingDetails | null): number {
 </script>
 
 <template>
-  <v-menu open-on-hover location="end" >
+  <v-menu open-on-hover location="end">
     <template v-slot:activator="{ props }">
-      <v-btn v-bind="props" icon="mdi-information-outline" variant="text" density="compact" size="small" />
+      <v-btn
+        v-bind="props"
+        icon="mdi-information-outline"
+        variant="text"
+        density="compact"
+        size="small"
+      />
     </template>
 
     <v-card class="d-flex flex-column mx-auto py-8" elevation="10" height="500" width="360">
@@ -35,7 +41,13 @@ function sumRatings(rds: RatingDetails | null): number {
 
       <v-list bg-color="transparent" class="d-flex flex-column-reverse" density="compact">
         <v-list-item v-for="(i, key) in 5" :key="key">
-          <v-progress-linear :model-value="ratingCountList[key]" :max="totalRatings" class="mx-n5" color="amber" height="20" />
+          <v-progress-linear
+            :model-value="ratingCountList[key]"
+            :max="totalRatings"
+            class="mx-n5"
+            color="amber"
+            height="20"
+          />
 
           <template v-slot:prepend>
             <span>{{ i }}</span>
