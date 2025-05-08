@@ -45,15 +45,24 @@ function handleSemesterChange(value: string | null, ReviewId: number) {
 
 </script>
 
-<template v-if="finishedLoadingReviews">
-    <div v-if="UserData == null">
-        <v-card class="mx-auto" style="margin-top: 10px;">
-            <v-card-title>No reviews found.</v-card-title>
-            <v-card-text>You haven't reviewed anything yet :O</v-card-text>
-            
-        </v-card>
-    </div>
-    <div v-for="(review, index) in UserData" :key="'Review' + index">
+<template>
+    <v-skeleton-loader
+    v-if="!finishedLoadingReviews"
+    class="mx-auto"
+    type="card"
+    :loading="!finishedLoadingReviews"
+    width="400"
+    height="200"
+    />
+    <template v-else>
+        <div v-if="UserData == null">
+            <v-card class="mx-auto" style="margin-top: 10px;">
+                <v-card-title>No reviews found.</v-card-title>
+                <v-card-text>You haven't reviewed anything yet :O</v-card-text>
+                
+            </v-card>
+        </div>
+        <div v-for="(review, index) in UserData" :key="'Review' + index">
         <v-card :title="review.CourseName" class="mx-auto my-3">
             <template v-slot:append>
                 <v-tooltip v-if="review.Published.Status == 'pending'" text="Pending Review" location="bottom">
@@ -75,25 +84,26 @@ function handleSemesterChange(value: string | null, ReviewId: number) {
             </template>
 
             <v-card-subtitle> {{ review.CourseNumber }}</v-card-subtitle>
-            <v-container no-gutters>
-                <v-row>
-                    <v-select class="ml-3" density="comfortable" variant="underlined" max-width="170px" :items="semesters" hint="Taken in Semester" persistent-hint :label="review.Semester" @update:model-value="(value: string | null) => handleSemesterChange(value, review.Evaluationid)" />
-                </v-row>
-                <v-row>
-                    <v-col>
-                        <StarRating :ratings="review.Rating" :rating-id="review.Evaluationid" :editable="true" :review="review" :reload-data="loadUserData"/>
-                    </v-col>
-                    <v-col>
-                        <TextReview  v-model:review="review.Review" :review-id="review.Evaluationid" :editable="true" :reload-data="loadUserData"/>
-                    </v-col>
-                </v-row>
-                <v-row v-if="review.Published.Status == 'rejected'">
-                    <v-col>
-                        <v-card-text><b>Why This Was Not Approved</b><br> {{ review.RequestedChanges != null ? review.RequestedChanges : "No reason provided" }}</v-card-text>
-                    </v-col>
-                    <v-col />
-                </v-row>
-            </v-container>
-        </v-card>
-    </div>
+                <v-container no-gutters>
+                    <v-row>
+                        <v-select class="ml-3" density="comfortable" variant="underlined" max-width="170px" :items="semesters" hint="Taken in Semester" persistent-hint :label="review.Semester" @update:model-value="(value: string | null) => handleSemesterChange(value, review.Evaluationid)" />
+                    </v-row>
+                    <v-row>
+                        <v-col>
+                            <StarRating :ratings="review.Rating" :rating-id="review.Evaluationid" :editable="true" :review="review" :reload-data="loadUserData"/>
+                        </v-col>
+                        <v-col>
+                            <TextReview  v-model:review="review.Review" :review-id="review.Evaluationid" :editable="true" :reload-data="loadUserData"/>
+                        </v-col>
+                    </v-row>
+                    <v-row v-if="review.Published.Status == 'rejected'">
+                        <v-col>
+                            <v-card-text><b>Why This Was Not Approved</b><br> {{ review.RequestedChanges != null ? review.RequestedChanges : "No reason provided" }}</v-card-text>
+                        </v-col>
+                        <v-col />
+                    </v-row>
+                </v-container>
+            </v-card>
+        </div>
+    </template>
 </template>
