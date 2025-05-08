@@ -10,7 +10,7 @@ import {
   pushscrapeCourses
 } from '@/services/api'
 import { onMounted, ref } from 'vue'
-import TextReview from '@/components/TextReview.vue'
+import { useTheme } from 'vuetify'
 import CheckAuth from '@/components/CheckAuth.vue'
 const user = ref('')
 
@@ -18,6 +18,18 @@ const semesters = ref<string[]>([])
 const newSemester = ref<string>('')
 const scrapeSemester = ref<string>('')
 const reviews = ref<UnverifiedReview[]>([])
+
+import { DiffView, DiffModeEnum } from '@git-diff-view/vue'
+import { generateDiffFile } from '@git-diff-view/file'
+import '@git-diff-view/vue/styles/diff-view.css'
+
+const theme = useTheme()
+
+function getDiffFile(oldReview: string, newReview: string) {
+  const diffFile = generateDiffFile('', oldReview || '', '', newReview, '', '')
+  diffFile.init()
+  return diffFile
+}
 
 onMounted(async () => {
   const response = await fetchSemesters()
@@ -69,7 +81,7 @@ async function rejectClick(id: number, requestedChanges: string, index: number) 
 
 <template>
   <CheckAuth />
-  <main>
+  <main class="ml-4">
     <h2>Moderator</h2>
     <input v-model="user" placeholder="numbers@ethz.ch" class="input-semester" />
     <button @click="setModeratorClick" class="btn">Set Moderator</button>
@@ -99,7 +111,15 @@ async function rejectClick(id: number, requestedChanges: string, index: number) 
           <v-card-subtitle> {{ review.UserID }}</v-card-subtitle>
           <v-container>
             <v-col>
-              <TextReview :review="review.Review" :editable="false" />
+              <DiffView
+                :diff-file="getDiffFile(review.OldReview, review.Review)"
+                :diff-view-font-size="14"
+                :diff-view-mode="DiffModeEnum.Unified"
+                :diff-view-highlight="true"
+                :diff-view-add-widget="false"
+                :diff-view-theme="theme.global.name.value as ('dark' | 'light')"
+                :diff-view-wrap="true"
+              ></DiffView>
             </v-col>
           </v-container>
         </v-card>
