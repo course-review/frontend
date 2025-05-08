@@ -16,6 +16,8 @@
     "deploy": "npm run build && wrangler pages deploy ./dist"
   },
   "dependencies": {
+    "@git-diff-view/file": "^0.0.26",
+    "@git-diff-view/vue": "^0.0.26",
     "@mdi/font": "^7.4.47",
     "@types/express": "^5.0.1",
     "@unhead/vue": "^2.0.2",
