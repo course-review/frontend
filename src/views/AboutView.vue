@@ -17,7 +17,7 @@
         <summary>Who are we?</summary>
         <p>
           The two who started this project are Lukas Teufelberger and Andri Hunkeler. And also still
-          the ones maintaning it, but in future this will change as we think it should always be r
+          the ones maintaning it, but in future this will change as we think it should always be run
           by current ETH students.
         </p>
       </details>
@@ -30,7 +30,7 @@
         </p>
         <p class="ml-4">
           The other way is to help us accept and reject reviews. We read through every review and if
-          any is too RISKY we discuss it between us, if we should allow it.
+          any is potentially problematic we discuss it between us, if we should allow it.
         </p>
       </details>
       <details>
