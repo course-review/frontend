@@ -80,7 +80,7 @@ onMounted(async () => {
     </v-carousel>
 
     <v-row class="mt-4" justify="start">
-      <v-col cols="12" md class="order-2 order-md-1">
+      <v-col cols="12" md="6" class="order-2 order-md-1">
         <v-card class="ml-2 mr-2" elevation="2">
           <v-card-title>Latest Reviews</v-card-title>
           <v-list density="compact">
@@ -94,7 +94,7 @@ onMounted(async () => {
         </v-card>
       </v-col>
 
-      <v-col cols="12" md="auto" class="order-1 order-md-2">
+      <v-col cols="12" md="6" class="order-1 order-md-2">
         <v-card class="ml-2 mr-2" elevation="2">
           <v-card-title>Stats</v-card-title>
 
@@ -108,6 +108,15 @@ onMounted(async () => {
               <v-card-subtitle>Courses with reviews</v-card-subtitle>
             </v-card>
           </div>
+        </v-card>
+        <v-card class="ma-2" elevation="2">
+          <v-card-title>New Homepage!</v-card-title>
+          <v-card-text>
+            Welcome to our new CourseReview homepage! <br />
+            We moved away from <a href="https://n.ethz.ch/lteufelbe/coursereview">https://n.ethz.ch/lteufelbe/coursereview</a> to <a href="https://coursereview.ch">https://coursereview.ch</a> <br />
+            If you believe you can improve the website or have any suggestions, please reach out to us or directly make a pull request: <a href="https://github.com/course-review/">https://github.com/course-review/</a><br />
+            If you have any questions check out our <a href="https://coursereview.ch/about">about page</a>.
+          </v-card-text>
         </v-card>
       </v-col>
     </v-row>
