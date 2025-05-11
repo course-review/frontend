@@ -39,6 +39,16 @@ const old_review = ref(reviewText.value)
 
 if (isAdd) {
   isEditing.value = true
+  if (localStorage.text) {
+    reviewText.value = localStorage.text;
+  }
+}
+
+function updateValue(e: Event): void {
+  if (isAdd) {
+    const target = e.target as HTMLTextAreaElement;
+    localStorage.text = target.value;
+  }
 }
 
 function toggleEdit() {
@@ -73,6 +83,7 @@ async function submitNewReview() {
     const userId = ''
     await pushNewReview(reviewText.value, courseNumber, userId, semester, ratings)
     reviewText.value = ''
+    localStorage.removeItem('text')
     showSnackbar.value = true
     //todo something here: clear ratings, review, semester, courseNumber and show text
     if (reloadData != undefined) {
@@ -99,6 +110,7 @@ async function submitNewReview() {
         rows="5"
         auto-grow
         :readonly="!isEditing"
+        v-on:input="updateValue"
       ></v-textarea>
     </v-card-text>
     <v-card-subtitle v-if="!editable">{{ semester }}</v-card-subtitle>
