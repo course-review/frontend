@@ -55,9 +55,8 @@ const API: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL
 })
 
-const token = cookies.get('jwt')
-if (token == null) {
-  //todo popup to reload page
+function token() : string {
+  return cookies.get('jwt')
 }
 
 // Define the function with proper typing
@@ -94,15 +93,15 @@ export const fetchStats = async (): Promise<AxiosResponse<Stats>> => {
 }
 
 export const fetchUserData = async (): Promise<AxiosResponse<UserReview[]>> => {
-  return API.get<UserReview[]>(`/auth/getUserData?token=${token}`)
+  return API.get<UserReview[]>(`/auth/getUserData?token=${token()}`)
 }
 
 export const fetchUnverified = async (): Promise<AxiosResponse<UnverifiedReview[]>> => {
-  return API.get<UnverifiedReview[]>(`/auth/moderator/getUnverifiedReviews?token=${token}`)
+  return API.get<UnverifiedReview[]>(`/auth/moderator/getUnverifiedReviews?token=${token()}`)
 }
 
 export const pushVerifyReview = async (id: number): Promise<AxiosResponse<string>> => {
-  const data = { id: id, token: token }
+  const data = { id: id, token: token() }
   console.log(data)
   return API.post<string>('/auth/moderator/verifyReview', data)
 }
@@ -111,19 +110,19 @@ export const pushRejectReview = async (
   id: number,
   requested_changes: string
 ): Promise<AxiosResponse<string>> => {
-  const data = { id: id, token: token, requested_changes: requested_changes }
+  const data = { id: id, token: token(), requested_changes: requested_changes }
   return API.post<string>('/auth/moderator/rejectReview', data)
 }
 
 export const pushSetCurrentSemesters = async (
   semester: string[]
 ): Promise<AxiosResponse<string>> => {
-  const data = { list: semester, token: token }
+  const data = { list: semester, token: token() }
   return API.post<string>('/auth/moderator/setCurrentSemester', data)
 }
 
 export const pushSetModerator = async (user: string): Promise<AxiosResponse<string>> => {
-  const data = { user: user, token: token }
+  const data = { user: user, token: token() }
   return API.post<string>('/auth/admin/setModerator', data)
 }
 
@@ -131,12 +130,12 @@ export const pushUpdateReview = async (
   id: number,
   review: string
 ): Promise<AxiosResponse<string>> => {
-  const data = { id: id, review: review, token: token }
+  const data = { id: id, review: review, token: token() }
   return API.post<string>('/auth/updateReview', data)
 }
 
 export const pushDeleteReview = async (id: number): Promise<AxiosResponse<string>> => {
-  const data = { id: id, token: token }
+  const data = { id: id, token: token() }
   return API.post<string>('/auth/deleteReview', data)
 }
 
@@ -144,7 +143,7 @@ export const pushUpdateRating = async (
   id: number,
   rating: { [key: string]: Rating }
 ): Promise<AxiosResponse<string>> => {
-  const data = { id: id, token: token, ...ratingToRequest(rating) }
+  const data = { id: id, token: token(), ...ratingToRequest(rating) }
   return API.post<string>('/auth/updateRating', data)
 }
 
@@ -158,7 +157,7 @@ export const pushNewReview = async (
   const data = {
     review: review,
     courseNumber: courseNumber,
-    token: token,
+    token: token(),
     semester: semester,
     ...ratingToRequest(rating)
   }
@@ -169,16 +168,16 @@ export const pushSemesterChange = async (
   semester: string,
   id: number
 ): Promise<AxiosResponse<string>> => {
-  const data = { semester: semester, id: id, token: token }
+  const data = { semester: semester, id: id, token: token() }
   return API.post<string>('/auth/updateSemester', data)
 }
 
 export const pushDeleteRating = async (id: number): Promise<AxiosResponse<string>> => {
-  const data = { id: id, token: token }
+  const data = { id: id, token: token() }
   return API.post<string>('/auth/deleteRating', data)
 }
 export const pushscrapeCourses = async (semester: string): Promise<AxiosResponse<string>> => {
-  const data = { semester: semester, token: token }
+  const data = { semester: semester, token: token() }
   return API.post<string>('/auth/moderator/scrapeCourses', data)
 }
 
