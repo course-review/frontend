@@ -40,14 +40,14 @@ const old_review = ref(reviewText.value)
 if (isAdd) {
   isEditing.value = true
   if (localStorage.text) {
-    reviewText.value = localStorage.text;
+    reviewText.value = localStorage.text
   }
 }
 
 function updateValue(e: Event): void {
   if (isAdd) {
-    const target = e.target as HTMLTextAreaElement;
-    localStorage.text = target.value;
+    const target = e.target as HTMLTextAreaElement
+    localStorage.text = target.value
   }
 }
 
@@ -80,8 +80,7 @@ async function submitNewReview() {
   if (ratings == undefined || semester == undefined || courseNumber == undefined) {
     console.log('Ratings undefined')
   } else {
-    const userId = ''
-    await pushNewReview(reviewText.value, courseNumber, userId, semester, ratings)
+    await pushNewReview(reviewText.value, courseNumber, semester, ratings)
     reviewText.value = ''
     localStorage.removeItem('text')
     showSnackbar.value = true

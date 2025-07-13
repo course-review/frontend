@@ -7,7 +7,9 @@ import {
   pushSetModerator,
   type UnverifiedReview,
   pushVerifyReview,
-  pushscrapeCourses
+  pushscrapeCourses,
+  fetchUsageStats,
+  type UsageStats
 } from '@/services/api'
 import { onMounted, ref } from 'vue'
 import { useTheme } from 'vuetify'
@@ -18,11 +20,25 @@ const semesters = ref<string[]>([])
 const newSemester = ref<string>('')
 const scrapeSemester = ref<string>('')
 const reviews = ref<UnverifiedReview[]>([])
+const usageStats = ref<UsageStats>()
+const usersPerDay = ref<{ label: string; count: number }[]>([])
+const requestsPerDay = ref<{ label: string; count: number }[]>([])
+const requestsPerPath = ref<{ label: string; count: number }[]>([])
+const requestsPerHour = ref<{ label: string; count: number }[]>([])
+const newUsersPerDay = ref<{ label: string; count: number }[]>([])
+const totalUsersPerDay = ref<{ label: string; count: number }[]>([])
+const chartData = ref(false)
+const selectedDate = ref<string>()
+const counter = ref(0)
+
 
 import { DiffView, DiffModeEnum } from '@git-diff-view/vue'
 import { generateDiffFile } from '@git-diff-view/file'
 import '@git-diff-view/vue/styles/diff-view.css'
-
+import { transformUsageData } from '@/services/transformData'
+import StatChartTime from '@/components/charts/StatChartTime.vue'
+import RequestsPerPathChart from '@/components/charts/RequestsPerPathChart.vue'
+import StatChartBar from '@/components/charts/StatChartBar.vue'
 const theme = useTheme()
 
 function getDiffFile(oldReview: string, newReview: string) {
@@ -43,6 +59,61 @@ onMounted(async () => {
   const response = await fetchUnverified()
   reviews.value = response.data
 })
+
+onMounted(async () => {
+  const response = await fetchUsageStats()
+  usageStats.value = response.data
+
+  setData(usageStats.value)
+
+  chartData.value = true
+})
+
+function onDateChange() {
+  if (usageStats.value) {
+    setData(usageStats.value, selectedDate.value)
+    counter.value++
+    console.log(usersPerDay.value)
+  }
+}
+
+function setData(rawData: UsageStats, cutoffDate?: string) {
+  const {
+    usersPerDay: upd,
+    requestsPerDay: rpd,
+    requestsPerPath: rpp,
+    requestsPerHour: rph,
+    newUsersPerDay: nupd
+  } = transformUsageData(rawData, cutoffDate)
+
+  usersPerDay.value = upd
+  requestsPerDay.value = rpd
+  requestsPerPath.value = rpp
+  requestsPerHour.value = rph
+  newUsersPerDay.value = nupd
+  totalUsersPerDay.value = makeCumulative(nupd)
+
+  //sort data
+  requestsPerHour.value = [...requestsPerHour.value].sort((a, b) => {
+    const [aHour, aMin] = a.label.split(':').map(Number)
+    const [bHour, bMin] = b.label.split(':').map(Number)
+    return aHour * 60 + aMin - (bHour * 60 + bMin)
+  })
+
+  requestsPerPath.value = [...requestsPerPath.value].sort((a, b) => b.count - a.count)
+}
+
+function makeCumulative(data: { label: string; count: number }[]) {
+  let sum = 0
+  return data.map((d) => {
+    sum += d.count
+    return {
+      label: d.label,
+      count: sum
+    }
+  })
+}
+
 
 const removeSemester = (index: number) => {
   semesters.value.splice(index, 1)
@@ -117,7 +188,7 @@ async function rejectClick(id: number, requestedChanges: string, index: number) 
                 :diff-view-mode="DiffModeEnum.Unified"
                 :diff-view-highlight="true"
                 :diff-view-add-widget="false"
-                :diff-view-theme="theme.global.name.value as ('dark' | 'light')"
+                :diff-view-theme="theme.global.name.value as 'dark' | 'light'"
                 :diff-view-wrap="true"
               ></DiffView>
             </v-col>
@@ -134,6 +205,25 @@ async function rejectClick(id: number, requestedChanges: string, index: number) 
         </button>
       </li>
     </ul>
+    <br />
+    <h2>Statistics</h2>
+    <div v-if="chartData">
+      <!-- field to enter date -->
+      <input
+        type="date"
+        v-model="selectedDate"
+        class="input-semester"
+      />
+      <button @click="onDateChange" class="btn">Apply Date Filter</button>
+      <br />
+      <!-- Could be bargraph -->
+      <StatChartBar :key="counter + '-usersPerDay'" :data="usersPerDay" title="Users per Day" />
+      <StatChartBar :key="counter + '-newUsersPerDay'" :data="newUsersPerDay" title="New Users per Day" />
+      <StatChartTime :key="counter + '-totalUsersPerDay'" :data="totalUsersPerDay" title="Total Users" />
+      <StatChartTime :key="counter + '-requestsPerDay'" :data="requestsPerDay" title="Requests per Day" :pointRadius="2" />
+      <!-- <RequestsPerPathChart :data="requestsPerPath" /> -->
+      <StatChartBar :key="counter + '-requestsPerHour'" :data="requestsPerHour" title="Views per Hour"/>
+    </div>
   </main>
 </template>
 
