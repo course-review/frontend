@@ -109,7 +109,7 @@ export const fetchUnverified = async (): Promise<AxiosResponse<UnverifiedReview[
 }
 
 export const fetchUsageStats = async (): Promise<AxiosResponse<UsageStats>> => {
-  return API.get<UsageStats>(`/auth/moderator/usageStats?token=${token}`)
+  return API.get<UsageStats>(`/auth/moderator/usageStats?token=${token()}`)
 }
 
 export const pushVerifyReview = async (id: number): Promise<AxiosResponse<string>> => {
