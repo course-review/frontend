@@ -35,6 +35,14 @@ export interface UnverifiedReview {
   UserID: string
   ID: number
 }
+export interface UsageData {
+  time: string
+  value: string
+}
+export interface UsageStats {
+  paths: UsageData[]
+  users: UsageData[]
+}
 
 export interface Review {
   Review: string
@@ -101,6 +109,10 @@ export const fetchUnverified = async (): Promise<AxiosResponse<UnverifiedReview[
   return API.get<UnverifiedReview[]>(`/auth/moderator/getUnverifiedReviews?token=${token}`)
 }
 
+export const fetchUsageStats = async (): Promise<AxiosResponse<UsageStats>> => {
+  return API.get<UsageStats>(`/auth/moderator/usageStats?token=${token}`)
+}
+
 export const pushVerifyReview = async (id: number): Promise<AxiosResponse<string>> => {
   const data = { id: id, token: token }
   console.log(data)
@@ -151,7 +163,6 @@ export const pushUpdateRating = async (
 export const pushNewReview = async (
   review: string,
   courseNumber: string,
-  userID: string,
   semester: string,
   rating: { [key: string]: Rating }
 ): Promise<AxiosResponse<string>> => {
