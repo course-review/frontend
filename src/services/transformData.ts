@@ -22,6 +22,39 @@ export function transformUsageData(stats: UsageStats, cutoff?: string) {
     }
   })
 
+  // Fill missing days with 0s
+  function fillMissingDays<T>(
+    record: Record<string, T>,
+    emptyValue: T,
+    isSet = false
+  ) {
+    const keys = Object.keys(record)
+    if (keys.length === 0) return
+    const sortedDates = keys.sort()
+    const start = new Date(sortedDates[0])
+    const end = new Date(sortedDates[sortedDates.length - 1])
+    for (
+      let d = new Date(start);
+      d <= end;
+      d.setDate(d.getDate() + 1)
+    ) {
+      const dateStr = d.toISOString().slice(0, 10).replace(/-/g, '/')
+      if (!(dateStr in record)) {
+        record[dateStr] = isSet ? (new Set() as unknown as T) : emptyValue
+      }
+    }
+    // Ensure the record is sorted by date
+    const sortedRecord: Record<string, T> = {}
+    Object.keys(record).sort().forEach(date => {
+      sortedRecord[date] = record[date]
+    })
+    Object.keys(record).forEach(key => delete record[key])
+    Object.assign(record, sortedRecord)
+  }
+  fillMissingDays(usersPerDay, new Set<string>(), true)
+  fillMissingDays(requestsPerDay, 0)
+  fillMissingDays(newUsersPerDay, 0)
+
   stats.paths.forEach(({ time, value }) => {
     //"2025/05/15 11:07:34"
     const date = time.split(' ')[0]
