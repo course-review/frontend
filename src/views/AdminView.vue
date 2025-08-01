@@ -122,7 +122,7 @@ const removeSemester = (index: number) => {
 const addSemester = () => {
   console.log(newSemester.value)
   if (newSemester.value.trim() !== '') {
-    semesters.value.push(newSemester.value)
+    semesters.value.unshift(newSemester.value.trim())
     newSemester.value = ''
   }
 }
