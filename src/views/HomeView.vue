@@ -113,7 +113,7 @@ onMounted(async () => {
           <v-card-title>New Homepage!</v-card-title>
           <v-card-text>
             Welcome to our new CourseReview homepage! <br />
-            We moved away from <a href="https://n.ethz.ch/lteufelbe/coursereview">https://n.ethz.ch/lteufelbe/coursereview</a> to <a href="https://coursereview.ch">https://coursereview.ch</a> <br />
+            We moved away from <a href="https://n.ethz.ch/~lteufelbe/coursereview">https://n.ethz.ch/~lteufelbe/coursereview</a> to <a href="https://coursereview.ch">https://coursereview.ch</a> <br />
             If you believe you can improve the website or have any suggestions, please reach out to us or directly make a pull request: <a href="https://github.com/course-review/">https://github.com/course-review/</a><br />
             If you have any questions check out our <a href="https://coursereview.ch/about">about page</a>.
           </v-card-text>
