@@ -7,8 +7,8 @@
         $payload = ['exp'=>time() + 3600 * 24 * 3, 'student'=>true, 'unique_id'=>$_SERVER["uniqueID"]];
         $payload_encoded = base64url_encode(json_encode($payload));
 
-        $key_file = fopen('key.txt', 'r');
-        $key = fread($key_file, filesize('key.txt'));
+        $key_file = fopen('../private/key.txt', 'r');
+        $key = fread($key_file, filesize('../private/key.txt'));
         fclose($key_file);
 
         openssl_sign("$headers_encoded.$payload_encoded", $signature, $key, 'sha256WithRSAEncryption'); 
