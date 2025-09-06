@@ -42,6 +42,7 @@ function blankPage() {
   selectedSemester.value = ''
   selectedCourseNumber.value = ''
 }
+const panels = ref([0])
 </script>
 
 <template>
@@ -86,6 +87,44 @@ function blankPage() {
             :course-number="selectedCourseNumber"
             :reload-data="blankPage"
           />
+          <br>
+          <v-expansion-panels v-model="panels" multiple>
+            <v-expansion-panel>
+              <v-expansion-panel-title class="text-body-2" style="font-size: 1rem; min-height: 40px;">
+                What not to write
+              </v-expansion-panel-title>
+              <v-expansion-panel-text class="text-body-2" style="font-size: 0.95rem;">
+                <ul>
+                  <li>Prof is bad.</li>
+                  <li>Worst course ever.</li>
+                  <li>TAs are useless.</li>
+                </ul>
+              </v-expansion-panel-text>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-title class="text-body-2" style="font-size: 1rem; min-height: 40px;">
+                What to write instead:
+              </v-expansion-panel-title>
+              <v-expansion-panel-text class="text-body-2" style="font-size: 0.95rem;">
+                <ul>
+                  <li>Did not like teaching style.</li>
+                  <li>Could not follow the prof during the lecture</li>
+                  <li>The TAs did not dive deeper or differently into the material but just repeated the lecture content</li>
+                  <li>The exercise sessions did not help me.</li>
+                </ul>
+              </v-expansion-panel-text>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-title class="text-body-2" style="font-size: 1rem; min-height: 40px;">
+                In short:
+              </v-expansion-panel-title>
+              <v-expansion-panel-text class="text-body-2" style="font-size: 0.95rem;">
+                Especially when writing bad things try to state things in a subjective way and give an example or explanation for the opinion.
+                Do not attack a person but rather state what you did not like: Prof is boring -> The lectures were monotonous (because of ...).
+                If it is a positive review, it is still good if you do the same, but here we do not have to fear of people being angry about the content that we host.
+              </v-expansion-panel-text>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-col>
       </v-row>
     </v-container>
