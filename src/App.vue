@@ -4,6 +4,7 @@ import { useTheme } from 'vuetify'
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { fetchCoursesData } from '@/services/api'
+import fuzzysort from 'fuzzysort'
 
 const theme = useTheme()
 const snackbar = ref(false)
@@ -17,6 +18,7 @@ const addReviewPath = computed(() => {
   return '/add' // Default path
 })
 const selectedCourse = ref<string | null>(null)
+const searchQuery = ref('')
 
 fetchCoursesData().then((response) => {
   const data = response.data
@@ -32,9 +34,27 @@ fetchCoursesData().then((response) => {
   courses.value.push(...fetchedCourses)
 })
 
+const filteredCourses = computed(() => {
+  if (!searchQuery.value) {
+    return courses.value.map(course => ({
+      ...course,
+      highlighted: course.label
+    }))
+  }
+  const results = fuzzysort.go(searchQuery.value, courses.value, {
+    key: 'label',
+  })
+
+  return results.map((r) => ({
+    ...r.obj,
+    highlighted: r.highlight('<mark>', '</mark>') || r.obj.label
+  }))
+})
+
 function navigateToPage(path: string) {
   if (path) {
     selectedCourse.value = null // Reset the autocomplete search
+    searchQuery.value = '' // Reset the search query
     $router.push('/course/' + path)
   }
 }
@@ -104,12 +124,21 @@ onMounted(() => {
               density="comfortable"
               menu-icon=""
               auto-select-first
-              :items="courses"
+              :items="filteredCourses"
               item-title="label"
               item-value="path"
               :model-value="selectedCourse"
               @update:modelValue="navigateToPage"
+              v-model:search="searchQuery"
+              :custom-filter="() => true"
             >
+              <template v-slot:item="{ props, item }">
+                <v-list-item v-bind="props" :title="undefined">
+                  <v-list-item-title>
+                    <span v-html="item.raw.highlighted"></span>
+                  </v-list-item-title>
+                </v-list-item>
+              </template>
               <template v-slot:no-data>
                 <v-list-item>
                   <v-list-item-title> No course found. </v-list-item-title>

@@ -19,7 +19,7 @@
 - make pop ups look better
 
 ### harder
-- better search: https://github.com/farzher/fuzzysort
+- ~~better search: https://github.com/farzher/fuzzysort~~
 - animations
 - 
 - usage tracking
