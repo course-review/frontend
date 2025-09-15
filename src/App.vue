@@ -131,6 +131,7 @@ onMounted(() => {
               @update:modelValue="navigateToPage"
               v-model:search="searchQuery"
               :custom-filter="() => true"
+              :menu-props="{ width: '600px'}"
             >
               <template v-slot:item="{ props, item }">
                 <v-list-item v-bind="props" :title="undefined">
