@@ -3,6 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { useCourseComparisonStore } from '@/stores/courseComparison'
 import { fetchRatings, type Rating2 } from '@/services/api'
 import { ratingCategories } from '@/constants/ratingCategories'
+import RadarChart from '@/components/charts/RadarChart.vue'
 
 const comparisonStore = useCourseComparisonStore()
 
@@ -31,18 +32,29 @@ const tableItems = computed(() => {
   })
 })
 
-function getAverageRating(courseNumber: string, category: string): string {
+const radarCourses = computed(() => {
+  return tableItems.value.map(item => ({
+    courseNumber: item.courseNumber,
+    courseName: item.courseName,
+    ratings: Object.fromEntries(ratingCategoriesArray.map(cat => [cat.key, item[cat.key]]))
+  }))
+})
+
+function getAverageRating(courseNumber: string, category: string): number | null {
   const ratings = courseRatings.value[courseNumber]
-  if (!ratings || ratings.length === 0) return 'N/A'
+  if (!ratings || ratings.length === 0) return null
 
   const categoryRatings = ratings
     .map(r => r[category])
     .filter(r => r !== undefined && r !== null)
 
-  if (categoryRatings.length === 0) return 'N/A'
+  if (categoryRatings.length === 0) return null
 
-  const sum = categoryRatings.reduce((acc, rating) => acc + rating, 0)
-  return (Math.round((sum / categoryRatings.length) * 10) / 10).toString()
+  let sum = 0
+  for (const rating of categoryRatings) {
+    sum += rating
+  }
+  return Math.round((sum / categoryRatings.length) * 10) / 10
 }
 
 function getRatingDistribution(courseNumber: string, category: string): number[] {
@@ -67,7 +79,7 @@ async function loadCourseRatings() {
   loading.value = true
   courseRatings.value = {}
 
-  for (const course of comparisonStore.selectedCourses) {
+  const promises = comparisonStore.selectedCourses.map(async (course) => {
     try {
       const response = await fetchRatings(course.courseNumber)
       if (response.data) {
@@ -76,7 +88,9 @@ async function loadCourseRatings() {
     } catch (error) {
       console.error(`Failed to load ratings for course ${course.courseNumber}:`, error)
     }
-  }
+  })
+
+  await Promise.all(promises)
 
   loading.value = false
 }
@@ -139,7 +153,9 @@ watch(() => comparisonStore.selectedCourses, () => {
       </div>
 
       <v-card v-else elevation="2">
-        <v-card-title>Rating Comparison</v-card-title>
+        <v-card-title>
+          Rating Table
+        </v-card-title>
         <v-card-text>
           <v-data-table
             :headers="tableHeaders"
@@ -157,9 +173,9 @@ watch(() => comparisonStore.selectedCourses, () => {
             </template>
 
             <template v-for="cat in ratingCategoriesArray" :key="cat.key" v-slot:[`item.${cat.key}`]="{ item }">
-              <v-tooltip location="top">
+              <v-tooltip location="bottom">
                 <template v-slot:activator="{ props }">
-                  <span v-bind="props">{{ item[cat.key] }}</span>
+                  <span v-bind="props">{{ item[cat.key] ?? 'N/A' }}</span>
                 </template>
                 <div class="pa-2" style="min-width: 200px;">
                   <div v-for="(count, index) in getRatingDistribution(item.courseNumber, cat.key)" :key="index" class="d-flex align-center mb-1">
@@ -178,6 +194,13 @@ watch(() => comparisonStore.selectedCourses, () => {
               </v-tooltip>
             </template>
           </v-data-table>
+        </v-card-text>
+      </v-card>
+
+      <v-card elevation="2" class="mt-4">
+        <v-card-title>Rating Profiles</v-card-title>
+        <v-card-text class="pa-2">
+          <RadarChart v-if="radarCourses.length > 0" :courses="radarCourses" :categories="ratingCategoriesArray" />
         </v-card-text>
       </v-card>
     </div>

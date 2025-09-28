@@ -28,7 +28,7 @@ export const useCourseComparisonStore = defineStore('courseComparison', () => {
     }
   }
 
-  const MAX_COURSES = 10
+  const MAX_COURSES = 5
 
   const selectedCourses = ref<CourseSelection[]>(loadFromStorage())
   const canAddMoreCourses = computed(() => selectedCourses.value.length < MAX_COURSES)
