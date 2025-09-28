@@ -45,6 +45,19 @@ function getAverageRating(courseNumber: string, category: string): string {
   return (Math.round((sum / categoryRatings.length) * 10) / 10).toString()
 }
 
+function getRatingDistribution(courseNumber: string, category: string): number[] {
+  const ratings = courseRatings.value[courseNumber]
+  if (!ratings) return [0, 0, 0, 0, 0]
+
+  const counts = [0, 0, 0, 0, 0]
+  ratings.forEach(r => {
+    const val = r[category as keyof typeof r]
+    if (typeof val === 'number' && val >= 1 && val <= 5) {
+      counts[val - 1]++
+    }
+  })
+  return counts.reverse() // start w/ 5 start counts
+}
 
 function removeCourse(courseNumber: string) {
   comparisonStore.removeCourse(courseNumber)
@@ -141,6 +154,28 @@ watch(() => comparisonStore.selectedCourses, () => {
                 <div class="font-weight-bold">{{ item.courseNumber }}</div>
                 <div class="text-caption text-medium-emphasis">{{ item.courseName }}</div>
               </div>
+            </template>
+
+            <template v-for="cat in ratingCategoriesArray" :key="cat.key" v-slot:[`item.${cat.key}`]="{ item }">
+              <v-tooltip location="top">
+                <template v-slot:activator="{ props }">
+                  <span v-bind="props">{{ item[cat.key] }}</span>
+                </template>
+                <div class="pa-2" style="min-width: 200px;">
+                  <div v-for="(count, index) in getRatingDistribution(item.courseNumber, cat.key)" :key="index" class="d-flex align-center mb-1">
+                    <span class="mr-2 text-caption font-weight-bold">{{ 5 - index }}</span>
+                    <v-icon small class="mr-1" color="amber">mdi-star</v-icon>
+                    <v-progress-linear
+                      :model-value="count"
+                      :max="Math.max(...getRatingDistribution(item.courseNumber, cat.key)) || 1"
+                      height="10"
+                      color="amber"
+                      class="flex-grow-1"
+                    />
+                    <span class="ml-2 text-caption font-weight-bold">{{ count }}</span>
+                  </div>
+                </div>
+              </v-tooltip>
             </template>
           </v-data-table>
         </v-card-text>
