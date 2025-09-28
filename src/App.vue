@@ -5,6 +5,7 @@ import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { fetchCoursesData } from '@/services/api'
 import fuzzysort from 'fuzzysort'
+import { useCourseComparisonStore } from '@/stores/courseComparison'
 
 const theme = useTheme()
 const snackbar = ref(false)
@@ -19,6 +20,8 @@ const addReviewPath = computed(() => {
 })
 const selectedCourse = ref<string | null>(null)
 const searchQuery = ref('')
+
+const comparisonStore = useCourseComparisonStore()
 
 fetchCoursesData().then((response) => {
   const data = response.data
@@ -165,6 +168,25 @@ onMounted(() => {
                 </template>
               </v-tooltip>
 
+              <v-tooltip location="bottom" text="Compare Courses">
+                <template v-slot:activator="{ props }">
+                  <v-badge v-if="comparisonStore.selectedCoursesCount > 0" :content="comparisonStore.selectedCoursesCount" color="primary" class="nav-icon-badge" offset-x="10" offset-y="10">
+                    <v-btn
+                      variant="text"
+                      icon="mdi-chart-bar"
+                      to="/compare"
+                      v-bind="props"
+                    />
+                  </v-badge>
+                  <v-btn v-else
+                    variant="text"
+                    icon="mdi-chart-bar"
+                    to="/compare"
+                    v-bind="props"
+                  />
+                </template>
+              </v-tooltip>
+
               <v-btn
                 @click="toggleTheme"
                 :icon="
@@ -185,6 +207,16 @@ onMounted(() => {
                     title="Add a Review"
                   />
                   <v-list-item to="/user" prepend-icon="mdi-account" title="Your Reviews" />
+                  
+                  <v-list-item to="/compare">
+                    <template v-slot:prepend>
+                      <v-badge v-if="comparisonStore.selectedCoursesCount > 0" :content="comparisonStore.selectedCoursesCount" color="primary" class="nav-icon-badge">
+                        <v-icon>mdi-chart-bar</v-icon>
+                      </v-badge>
+                      <v-icon v-else>mdi-chart-bar</v-icon>
+                    </template>
+                    <v-list-item-title>Compare Courses</v-list-item-title>
+                  </v-list-item>
                   <v-list-item
                     @click="toggleTheme"
                     :title="theme.global.current.value.dark ? 'Light Mode' : 'Dark Mode'"
@@ -237,5 +269,11 @@ onMounted(() => {
 .unstyled-link {
   color: inherit;
   text-decoration: none;
+}
+
+.nav-icon-badge {
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
 }
 </style>
