@@ -9,6 +9,7 @@ export interface CourseSelection {
 export const useCourseComparisonStore = defineStore('courseComparison', () => {
 
   const STORAGE_KEY = 'courseComparison_selectedCourses'
+  const MAX_COURSES = 5
 
   const loadFromStorage = (): CourseSelection[] => {
     try {
@@ -27,8 +28,6 @@ export const useCourseComparisonStore = defineStore('courseComparison', () => {
       console.warn('Failed to save course comparison data to localStorage:', error)
     }
   }
-
-  const MAX_COURSES = 5
 
   const selectedCourses = ref<CourseSelection[]>(loadFromStorage())
   const canAddMoreCourses = computed(() => selectedCourses.value.length < MAX_COURSES)

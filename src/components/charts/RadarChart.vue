@@ -34,8 +34,8 @@ const props = defineProps<{
 const labels = computed(() => props.categories.map(cat => display.xs.value ? cat.key : cat.label))
 
 const datasets = computed(() => props.courses.map((course, index) => {
-  const fullLabel = `${course.courseNumber}: ${course.courseName}`
-  const truncatedLabel = fullLabel.length > 50 ? fullLabel.substring(0, 47) + '...' : fullLabel
+  const fullLabel = course.courseName
+  const truncatedLabel = fullLabel.length > 45 ? fullLabel.substring(0, 42) + '...' : fullLabel
   return {
     label: truncatedLabel,
     data: props.categories.map(cat => course.ratings[cat.key] ?? null),
@@ -71,8 +71,8 @@ const chartOptions = computed<ChartOptions<'radar'>>(() => ({
       display: false
     },
     legend: {
-      position: display.xs.value ? 'bottom' : 'right',
-      align: display.xs.value ? 'start' : 'center',
+      position: display.smAndDown.value ? 'bottom' : 'right',
+      align: display.smAndDown.value ? 'start' : 'center',
       labels: {
         font: {
           size: display.xs.value ? 12 : 14

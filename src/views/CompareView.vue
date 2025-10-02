@@ -75,6 +75,10 @@ function removeCourse(courseNumber: string) {
   comparisonStore.removeCourse(courseNumber)
 }
 
+function openCourse(courseNumber: string) {
+  window.open(`/course/${courseNumber}`, '_blank')
+}
+
 async function loadCourseRatings() {
   loading.value = true
   courseRatings.value = {}
@@ -139,6 +143,7 @@ watch(() => comparisonStore.selectedCourses, () => {
             :key="course.courseNumber"
             variant="tonal"
             closable
+            @click="openCourse(course.courseNumber)"
             @click:close="removeCourse(course.courseNumber)"
             class="ma-1"
           >
@@ -166,10 +171,12 @@ watch(() => comparisonStore.selectedCourses, () => {
             class="elevation-0"
           >
             <template v-slot:item.courseNumber="{ item }">
-              <div>
-                <div class="text-caption text-medium-emphasis">{{ item.courseNumber }}</div>
-                <div class="font-weight-bold">{{ item.courseName }}</div>
-              </div>
+                <div>
+                  <div class="text-caption text-medium-emphasis">{{ item.courseNumber }}</div>
+                  <a :href="`/course/${item.courseNumber}`" target="_blank" class="clickable-course-list">
+                    <div class="font-weight-bold course-name">{{ item.courseName }}</div>
+                  </a>
+                </div>
             </template>
 
             <template v-for="cat in ratingCategoriesArray" :key="cat.key" v-slot:[`item.${cat.key}`]="{ item }">
@@ -208,4 +215,12 @@ watch(() => comparisonStore.selectedCourses, () => {
 </template>
 
 <style scoped>
+.clickable-course-list {
+  text-decoration: none;
+  color: inherit;
+}
+
+.clickable-course-list:hover {
+  text-decoration: underline;
+}
 </style>

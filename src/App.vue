@@ -150,7 +150,7 @@ onMounted(() => {
               </template>
             </v-autocomplete>
 
-            <div v-if="$vuetify.display.smAndUp">
+            <div v-if="$vuetify.display.mdAndUp">
               <v-tooltip location="bottom" text="Add a Review">
                 <template v-slot:activator="{ props }">
                   <v-btn
