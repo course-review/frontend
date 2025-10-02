@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { pushDeleteRating, pushUpdateRating } from '@/services/api'
 import RatingOverview from '../components/RatingOverview.vue'
+import { ratingCategories } from '@/constants/ratingCategories'
 import type { Rating } from './Rating.types'
 import { computed, nextTick } from 'vue'
 
@@ -19,14 +20,6 @@ const {
 }>()
 
 const localRatings = computed(() => ratings)
-
-const ratingCategories: { [key: string]: string } = {
-  Recommended: 'I would recommend it',
-  Engaging: 'The content is interesting',
-  Difficulty: 'The difficulty is appropriate',
-  Effort: 'The required effort is appropriate',
-  Resources: 'The resources are useful'
-}
 
 function updateRating(id: string, value: number) {
   console.log(`API call to update rating '${id}' to: ${value}`)

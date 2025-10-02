@@ -2,7 +2,7 @@
 import TextReview from '@/components/TextReview.vue'
 import StarRating from '@/components/StarRating.vue'
 import type { RatingDetails } from '@/components/Rating.types'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import {
   fetchReviews,
   type Review,
@@ -11,6 +11,7 @@ import {
   defaultStarRatings
 } from '@/services/api'
 import { fetchName } from '@/services/api'
+import { useCourseComparisonStore } from '@/stores/courseComparison'
 
 const reviews = ref<Review[]>([])
 const ratings = ref<Rating2[]>([])
@@ -23,6 +24,17 @@ const courseNumber = Array.isArray(route.params.id) ? route.params.id[0] : route
 const courseName = ref<string>('')
 const finishedLoadingRatings = ref(false)
 const finishedLoadingReviews = ref(false)
+
+// comparsion view logic
+const comparisonStore = useCourseComparisonStore()
+const isSelected = computed(() => comparisonStore.isCourseSelected(courseNumber))
+const canAddCourse = computed(() => comparisonStore.canAddMoreCourses || isSelected.value)
+
+function toggleCourseSelection() {
+  if (courseName.value) {
+    comparisonStore.toggleCourse(courseNumber, courseName.value)
+  }
+}
 
 onMounted(async () => {
   const response = await fetchReviews(courseNumber)
@@ -107,7 +119,28 @@ function insertIntoStarRatings(ratingDetail: RatingDetails, stars: number) {
 </script>
 
 <template>
-  <h2 class="ma-4">{{ $route.params.id }}: {{ courseName }}</h2>
+  <div class="d-flex align-center justify-space-between ma-4">
+    <h2 class="flex-grow-1">{{ $route.params.id }}: {{ courseName }}</h2>
+    <v-tooltip location="bottom">
+      <template v-slot:activator="{ props }">
+        <div v-bind="props">
+          <v-btn
+            :color="isSelected ? 'primary' : 'grey'"
+            :disabled="!canAddCourse && !isSelected"
+            :variant="isSelected ? 'flat' : 'outlined'"
+            @click="toggleCourseSelection"
+            size="default"
+            class="ml-2 compare-btn"
+            elevation="1"
+          >
+            <v-icon :icon="isSelected ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'" class="mr-1" />
+            Compare
+          </v-btn>
+        </div>
+      </template>
+      {{ isSelected ? 'Remove from comparison' : (!canAddCourse ? `Max ${comparisonStore.MAX_COURSES} courses can be selected` : 'Add to comparison') }}
+    </v-tooltip>
+  </div>
 
   <v-divider class="border-opacity-25 mx-3"></v-divider>
 
