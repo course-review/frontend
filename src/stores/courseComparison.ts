@@ -57,7 +57,7 @@ export const useCourseComparisonStore = defineStore('courseComparison', () => {
 
   function removeCourse(courseNumber: string) {
     const index = selectedCourses.value.findIndex(course => course.courseNumber === courseNumber)
-    if (index > -1) {
+    if (index >= 0) {
       selectedCourses.value.splice(index, 1)
       saveToStorage(selectedCourses.value)
       return true
