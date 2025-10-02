@@ -167,8 +167,8 @@ watch(() => comparisonStore.selectedCourses, () => {
           >
             <template v-slot:item.courseNumber="{ item }">
               <div>
-                <div class="font-weight-bold">{{ item.courseNumber }}</div>
-                <div class="text-caption text-medium-emphasis">{{ item.courseName }}</div>
+                <div class="text-caption text-medium-emphasis">{{ item.courseNumber }}</div>
+                <div class="font-weight-bold">{{ item.courseName }}</div>
               </div>
             </template>
 
