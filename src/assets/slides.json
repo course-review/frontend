@@ -1,4 +1,11 @@
 [
+    {
+    "title": "Authentication",
+    "subtitle": "ETH network needed",
+    "text": "ETH will get rid of the n.ethz.ch webstites which we currently use for hosting. Currently already you need to be in the ETH network to login!",
+    "image": "",
+    "color": "red-lighten-3"
+  },
   {
     "title": "VVZ Extension",
     "subtitle": "CourseReview in VVZ",
