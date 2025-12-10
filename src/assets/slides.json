@@ -2,7 +2,7 @@
   {
     "title": "Authentication",
     "subtitle": "ETH network needed",
-    "text": "ETH will get rid of the n.ethz.ch webstites which we currently use for hosting. Currently already you need to be in the ETH network to login!",
+    "text": "ETH will get rid of the n.ethz.ch websites, which we currently use for hosting. You currently need to be in the ETH network to log in!",
     "image": "",
     "color": "red-lighten-3",
     "links": []
@@ -29,7 +29,7 @@
   {
     "title": "Teaching Evaluation",
     "subtitle": "Those pesky mails you get after every exam",
-    "text": "Have you ever wondered what LET does with your feedback? Apart from giving it to the lecturers, part of it can be accessed publically. If you are curious about the results, you can find them by following the link bellow.",
+    "text": "Have you ever wondered what LET does with your feedback? Apart from giving it to the lecturers, part of it can be accessed publicly. If you are curious about the results, you can find them by following the link below.",
     "image": "",
     "color": "cyan-lighten-3",
     "links": [
@@ -43,7 +43,7 @@
   {
     "title": "Contribute",
     "subtitle": "Get involved :)",
-    "text": "If you have feature suggestions, found a bug or want to contribute, dont hesitate to contact us. Or go to the projects github repositories directly.",
+    "text": "If you have feature suggestions, found a bug, or want to contribute, don't hesitate to contact us. Or go to the project's GitHub repositories directly.",
     "image": "",
     "color": "blue-lighten-2",
     "links": [
