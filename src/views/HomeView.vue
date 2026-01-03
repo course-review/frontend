@@ -61,7 +61,7 @@ onMounted(async () => {
           <v-card height="100%" class="d-flex flex-column" flat variant="text">
             <v-card-title>{{ slide.title }}</v-card-title>
             <v-card-subtitle>{{ slide.subtitle }}</v-card-subtitle>
-            <v-card-text>{{ slide.text }}</v-card-text>
+            <v-card-text style="white-space: pre-line;">{{ slide.text }}</v-card-text>
 
             <v-card-actions class="px-4">
               <v-btn

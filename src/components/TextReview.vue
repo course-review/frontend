@@ -24,6 +24,7 @@ const {
 }>()
 
 const showSnackbar = ref(false)
+const randomString = ref('');
 
 const emit = defineEmits(['update:review'])
 
@@ -80,8 +81,9 @@ async function submitNewReview() {
   if (ratings == undefined || semester == undefined || courseNumber == undefined) {
     console.log('Ratings undefined')
   } else {
-    await pushNewReview(reviewText.value, courseNumber, semester, ratings)
+    await pushNewReview(reviewText.value, courseNumber, semester, randomString.value, ratings)
     reviewText.value = ''
+    randomString.value = ''
     localStorage.removeItem('text')
     showSnackbar.value = true
     //todo something here: clear ratings, review, semester, courseNumber and show text
@@ -111,6 +113,12 @@ async function submitNewReview() {
         :readonly="!isEditing"
         v-on:input="updateValue"
       ></v-textarea>
+      
+      <h3>Temporary Claim Code</h3>
+      <p>Login is currently unavailable. Enter a unique code here so you can claim this review later.</p>
+      <input v-model="randomString" placeholder="Pick a random string" maxlength="16"
+      style="border: 1px solid #ccc; padding: 2px 12px;"/>
+
     </v-card-text>
     <v-card-subtitle v-if="!editable">{{ semester }}</v-card-subtitle>
     <v-card-actions v-if="!isAdd && editable">

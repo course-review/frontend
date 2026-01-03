@@ -1,8 +1,8 @@
 [
   {
-    "title": "Authentication",
-    "subtitle": "ETH network needed",
-    "text": "ETH will get rid of the n.ethz.ch websites, which we currently use for hosting. You currently need to be in the ETH network to log in!",
+    "title": "Adding Reviews without Authentication",
+    "subtitle": "\"https://n.ethz.ch/~neth\" websites have been removed",
+    "text": "ETH got rid of the n.ethz.ch websites, which we used for the authentication process. There is a chance that we can integrate the ETH login again but at the moment we depend on others to set it up.\n\nIn the meantime, you can still add reviews without authentication. This means you will not be able to edit them for now!\nThere is an option to provide a random string as an identifier when adding a review. Save this string somewhere safe, as you will need it to claim the review. That way you can edit or delete it again.\n\nWe apologize for the inconvenience and hope to have a proper authentication method again soon.",
     "image": "",
     "color": "red-lighten-3",
     "links": []

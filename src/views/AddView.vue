@@ -46,7 +46,7 @@ const panels = ref([0])
 </script>
 
 <template>
-  <CheckAuth />
+  <!-- <CheckAuth /> -->
   <v-card class="mx-auto mt-5">
     <v-container>
       <v-autocomplete

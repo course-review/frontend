@@ -38,17 +38,17 @@ const router = createRouter({
       component: () => import('../views/CompareView.vue'),
       meta: { requiresAuth: false }
     },
-    {
-      path: '/user',
-      name: 'user',
-      component: () => import('../views/UserView.vue'),
-      meta: { requiresAuth: true }
-    },
+    // {
+    //   path: '/user',
+    //   name: 'user',
+    //   component: () => import('../views/UserView.vue'),
+    //   meta: { requiresAuth: true }
+    // },
     {
       path: '/add',
       name: 'add',
       component: () => import('../views/AddView.vue'),
-      meta: { requiresAuth: true }
+      meta: { requiresAuth: false }
     },
     {
       path: '/admin',

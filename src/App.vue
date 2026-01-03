@@ -162,11 +162,11 @@ onMounted(() => {
                 </template>
               </v-tooltip>
 
-              <v-tooltip location="bottom" text="Your Reviews">
+              <!-- <v-tooltip location="bottom" text="Your Reviews">
                 <template v-slot:activator="{ props }">
                   <v-btn variant="text" icon="mdi-account" to="/user" v-bind="props" />
                 </template>
-              </v-tooltip>
+              </v-tooltip> -->
 
               <v-tooltip location="bottom" text="Compare Courses">
                 <template v-slot:activator="{ props }">

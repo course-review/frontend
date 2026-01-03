@@ -163,6 +163,7 @@ export const pushNewReview = async (
   review: string,
   courseNumber: string,
   semester: string,
+  randomString: string,
   rating: { [key: string]: Rating }
 ): Promise<AxiosResponse<string>> => {
   const data = {
@@ -170,9 +171,10 @@ export const pushNewReview = async (
     courseNumber: courseNumber,
     token: token(),
     semester: semester,
+    randomString: randomString,
     ...ratingToRequest(rating)
   }
-  return API.post<string>('/auth/insertReview', data)
+  return API.post<string>('/insertReview', data)
 }
 
 export const pushSemesterChange = async (
