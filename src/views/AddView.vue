@@ -4,7 +4,6 @@ import { onMounted, ref } from 'vue'
 import { defaultStarRatings } from '@/services/api'
 import TextReview from '../components/TextReview.vue'
 import StarRating from '../components/StarRating.vue'
-import CheckAuth from '@/components/CheckAuth.vue'
 
 const semesters = ref<string[]>([])
 const reviewAdd = ref('')
@@ -36,9 +35,7 @@ function selectCourse(number: string) {
   selectedCourseNumber.value = number
 }
 function blankPage() {
-  console.log('Blank page')
   starRatingsAdd.value = defaultStarRatings()
-  console.log(starRatingsAdd.value)
   selectedSemester.value = ''
   selectedCourseNumber.value = ''
 }
@@ -87,13 +84,13 @@ const panels = ref([0])
             :course-number="selectedCourseNumber"
             :reload-data="blankPage"
           />
-          <br>
+          <br />
           <v-expansion-panels v-model="panels" multiple>
             <v-expansion-panel>
-              <v-expansion-panel-title class="text-body-2" style="font-size: 1rem; min-height: 40px;">
+              <v-expansion-panel-title class="text-body-2 panel-title">
                 What not to write
               </v-expansion-panel-title>
-              <v-expansion-panel-text class="text-body-2" style="font-size: 0.95rem;">
+              <v-expansion-panel-text class="text-body-2 panel-text">
                 <ul>
                   <li>Prof is bad.</li>
                   <li>Worst course ever.</li>
@@ -102,10 +99,10 @@ const panels = ref([0])
               </v-expansion-panel-text>
             </v-expansion-panel>
             <v-expansion-panel>
-              <v-expansion-panel-title class="text-body-2" style="font-size: 1rem; min-height: 40px;">
+              <v-expansion-panel-title class="text-body-2 panel-title">
                 What to write instead:
               </v-expansion-panel-title>
-              <v-expansion-panel-text class="text-body-2" style="font-size: 0.95rem;">
+              <v-expansion-panel-text class="text-body-2 panel-text">
                 <ul>
                   <li>Did not like teaching style.</li>
                   <li>Could not follow the prof during the lecture</li>
@@ -115,10 +112,10 @@ const panels = ref([0])
               </v-expansion-panel-text>
             </v-expansion-panel>
             <v-expansion-panel>
-              <v-expansion-panel-title class="text-body-2" style="font-size: 1rem; min-height: 40px;">
+              <v-expansion-panel-title class="text-body-2 panel-title">
                 In short:
               </v-expansion-panel-title>
-              <v-expansion-panel-text class="text-body-2" style="font-size: 0.95rem;">
+              <v-expansion-panel-text class="text-body-2 panel-text">
                 Especially when writing bad things try to state things in a subjective way and give an example or explanation for the opinion.
                 Do not attack a person but rather state what you did not like: Prof is boring -> The lectures were monotonous (because of ...).
                 If it is a positive review, it is still good if you do the same, but here we do not have to fear of people being angry about the content that we host.
@@ -130,3 +127,14 @@ const panels = ref([0])
     </v-container>
   </v-card>
 </template>
+
+<style scoped>
+.panel-title {
+  font-size: 1rem;
+  min-height: 40px;
+}
+
+.panel-text {
+  font-size: 0.95rem;
+}
+</style>

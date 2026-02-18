@@ -1,41 +1,42 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
-import { useTheme } from 'vuetify'
+import { useRouter, useRoute } from 'vue-router'
+import { useDisplay, useTheme } from 'vuetify'
 import { ref, onMounted, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import { fetchCoursesData } from '@/services/api'
 import fuzzysort from 'fuzzysort'
 import { useCourseComparisonStore } from '@/stores/courseComparison'
 
 const theme = useTheme()
+const { smAndUp, mdAndUp } = useDisplay()
 const snackbar = ref(false)
 const $router = useRouter()
+const route = useRoute()
 const courses = ref<{ label: string; path: string }[]>([])
-const route = ref($router.currentRoute)
+const searchMenuProps = { width: '600px' }
 const addReviewPath = computed(() => {
-  if (route.value.name === 'course' && route.value.params.id) {
-    return `/add?id=${route.value.params.id}`
+  if (route.name === 'course' && route.params.id) {
+    return `/add?id=${route.params.id}`
   }
-  return '/add' // Default path
+  return '/add'
 })
+const brandLabel = computed(() => (smAndUp.value ? 'CourseReview' : 'CR'))
 const selectedCourse = ref<string | null>(null)
 const searchQuery = ref('')
 
 const comparisonStore = useCourseComparisonStore()
 
-fetchCoursesData().then((response) => {
+async function loadCourses() {
+  const response = await fetchCoursesData()
   const data = response.data
-
   if (!Array.isArray(data)) {
     return
   }
 
-  const fetchedCourses = response.data.map((course) => ({
+  courses.value = data.map((course) => ({
     label: `${course.CourseNumber} ${course.CourseName}`,
     path: course.CourseNumber
   }))
-  courses.value.push(...fetchedCourses)
-})
+}
 
 const filteredCourses = computed(() => {
   if (!searchQuery.value) {
@@ -56,8 +57,8 @@ const filteredCourses = computed(() => {
 
 function navigateToPage(path: string) {
   if (path) {
-    selectedCourse.value = null // Reset the autocomplete search
-    searchQuery.value = '' // Reset the search query
+    selectedCourse.value = null
+    searchQuery.value = ''
     $router.push('/course/' + path)
   }
 }
@@ -83,6 +84,7 @@ function loadSnackbarState() {
 }
 
 onMounted(() => {
+  loadCourses()
   loadStoredTheme()
   loadSnackbarState()
 })
@@ -98,31 +100,15 @@ onMounted(() => {
           fluid
         >
           <v-app-bar-title class="pl-0">
-            <div v-if="$vuetify.display.smAndUp">
-              <router-link
-                to="/"
-                exact
-                class="unstyled-link"
-                style="font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.5em"
-                >CourseReview</router-link
-              >
-            </div>
-            <div v-else class="ml-1">
-              <router-link
-                to="/"
-                exact
-                class="unstyled-link"
-                style="font-family: 'Roboto', sans-serif; font-style: italic; font-size: 1.5em"
-                >CR</router-link
-              >
-            </div>
+            <router-link to="/" exact class="unstyled-link brand-link">
+              {{ brandLabel }}
+            </router-link>
           </v-app-bar-title>
           <div class="d-flex align-center ga-2">
-            <!-- maybe dont have the search just that specific pixel value? -->
             <v-autocomplete
+              class="search-autocomplete"
               variant="underlined"
               label="Course Search"
-              width="264px"
               append-inner-icon="mdi-magnify"
               density="comfortable"
               menu-icon=""
@@ -134,7 +120,7 @@ onMounted(() => {
               @update:modelValue="navigateToPage"
               v-model:search="searchQuery"
               :custom-filter="() => true"
-              :menu-props="{ width: '600px'}"
+              :menu-props="searchMenuProps"
             >
               <template v-slot:item="{ props, item }">
                 <v-list-item v-bind="props" :title="undefined">
@@ -150,7 +136,7 @@ onMounted(() => {
               </template>
             </v-autocomplete>
 
-            <div v-if="$vuetify.display.mdAndUp">
+            <div v-if="mdAndUp">
               <v-tooltip location="bottom" text="Add a Review">
                 <template v-slot:activator="{ props }">
                   <v-btn
@@ -269,6 +255,16 @@ onMounted(() => {
 .unstyled-link {
   color: inherit;
   text-decoration: none;
+}
+
+.brand-link {
+  font-family: Roboto, sans-serif;
+  font-style: italic;
+  font-size: 1.5em;
+}
+
+.search-autocomplete {
+  width: 264px;
 }
 
 .nav-icon-badge {

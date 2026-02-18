@@ -24,7 +24,8 @@ const {
 }>()
 
 const showSnackbar = ref(false)
-const randomString = ref('');
+const randomString = ref('')
+const draftStorageKey = 'text'
 
 const emit = defineEmits(['update:review'])
 
@@ -40,15 +41,16 @@ const old_review = ref(reviewText.value)
 
 if (isAdd) {
   isEditing.value = true
-  if (localStorage.text) {
-    reviewText.value = localStorage.text
+  const storedReview = localStorage.getItem(draftStorageKey)
+  if (storedReview) {
+    reviewText.value = storedReview
   }
 }
 
 function updateValue(e: Event): void {
   if (isAdd) {
     const target = e.target as HTMLTextAreaElement
-    localStorage.text = target.value
+    localStorage.setItem(draftStorageKey, target.value)
   }
 }
 
@@ -106,6 +108,7 @@ async function submitNewReview() {
         </div>
       </div>
       <v-textarea
+        class="review-textarea"
         v-else
         v-model="reviewText"
         rows="5"
@@ -115,9 +118,17 @@ async function submitNewReview() {
       ></v-textarea>
       
       <h3 v-if="isAdd">Temporary Claim Code</h3>
-      <p v-if="isAdd">Login is currently unavailable. Enter a unique code here so you can claim this review later.</p>
-      <input v-model="randomString" placeholder="Pick a random string" maxlength="16"
-      style="border: 1px solid #ccc; padding: 2px 12px;" v-if="isAdd"/>
+      <p v-if="isAdd">
+        Login is currently unavailable. Enter a unique code here so you can claim this review
+        later.
+      </p>
+      <input
+        v-if="isAdd"
+        v-model="randomString"
+        placeholder="Pick a random string"
+        maxlength="16"
+        class="claim-code-input"
+      />
 
     </v-card-text>
     <v-card-subtitle v-if="!editable">{{ semester }}</v-card-subtitle>
@@ -132,7 +143,7 @@ async function submitNewReview() {
     </v-card-actions>
     <v-card-actions v-if="isAdd">
       <v-btn
-        style="margin-top: 10px"
+        class="submit-btn"
         variant="flat"
         color="green-lighten-1"
         @click.stop="submitNewReview"
@@ -141,3 +152,14 @@ async function submitNewReview() {
     </v-card-actions>
   </v-card>
 </template>
+
+<style scoped>
+.claim-code-input {
+  border: 1px solid #ccc;
+  padding: 2px 12px;
+}
+
+.submit-btn {
+  margin-top: 10px;
+}
+</style>

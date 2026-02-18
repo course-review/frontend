@@ -49,9 +49,7 @@ async function clearAllRatings() {
     <v-container v-for="(label, key) in ratingCategories" :key="key" class="pa-2">
       <v-row no-gutters>
         <v-col class="flex-grow-1 flex-shrink-0">
-          <v-card-text style="float: left; margin: auto" class="pa-0 align-baseline"
-            >{{ label }}:</v-card-text
-          >
+          <v-card-text class="pa-0 align-baseline rating-label">{{ label }}:</v-card-text>
         </v-col>
         <v-col>
           <!-- todo: clearable field might be of interest -->
@@ -77,3 +75,10 @@ async function clearAllRatings() {
     </v-card-actions>
   </v-card>
 </template>
+
+<style scoped>
+.rating-label {
+  float: left;
+  margin: auto;
+}
+</style>

@@ -61,7 +61,7 @@ onMounted(async () => {
           <v-card height="100%" class="d-flex flex-column" flat variant="text">
             <v-card-title>{{ slide.title }}</v-card-title>
             <v-card-subtitle>{{ slide.subtitle }}</v-card-subtitle>
-            <v-card-text style="white-space: pre-line;">{{ slide.text }}</v-card-text>
+            <v-card-text class="slide-text">{{ slide.text }}</v-card-text>
 
             <v-card-actions class="px-4">
               <v-btn
@@ -81,7 +81,7 @@ onMounted(async () => {
 
     <v-row class="mt-4" justify="start">
       <v-col cols="12" md="6" class="order-2 order-md-1">
-        <v-card class="ml-2 mr-2" elevation="2">
+        <v-card class="mx-2" elevation="2">
           <v-card-title>Latest Reviews</v-card-title>
           <v-list density="compact">
             <v-list-item
@@ -95,15 +95,15 @@ onMounted(async () => {
       </v-col>
 
       <v-col cols="12" md="6" class="order-1 order-md-2">
-        <v-card class="ml-2 mr-2" elevation="2">
+        <v-card class="mx-2" elevation="2">
           <v-card-title>Stats</v-card-title>
 
           <div class="d-flex justify-center mb-4">
-            <v-card color="grey lighten-4 mx-2">
+            <v-card color="grey lighten-4" class="mx-2">
               <v-card-title>{{ stats?.TotalReviews ?? 'NaN' }}</v-card-title>
               <v-card-subtitle>Reviews</v-card-subtitle>
             </v-card>
-            <v-card color="grey lighten-4 mx-2">
+            <v-card color="grey lighten-4" class="mx-2">
               <v-card-title>{{ stats?.TotalCourses ?? 'NaN' }}</v-card-title>
               <v-card-subtitle>Courses with reviews</v-card-subtitle>
             </v-card>
@@ -111,14 +111,38 @@ onMounted(async () => {
         </v-card>
         <v-card class="ma-2" elevation="2">
           <v-card-title>New Homepage!</v-card-title>
-          <v-card-text>
-            Welcome to our new CourseReview homepage! <br />
-            We moved away from <a href="https://n.ethz.ch/~lteufelbe/coursereview">https://n.ethz.ch/~lteufelbe/coursereview</a> to <a href="https://coursereview.ch">https://coursereview.ch</a> <br />
-            If you believe you can improve the website or have any suggestions, please reach out to us or directly make a pull request: <a href="https://github.com/course-review/">https://github.com/course-review/</a><br />
-            If you have any questions check out our <a href="https://coursereview.ch/about">about page</a>.
+          <v-card-text class="info-text">
+            <p>
+              Welcome to our new CourseReview homepage!
+            </p>
+            <p>
+              We moved away from
+              <a href="https://n.ethz.ch/~lteufelbe/coursereview">https://n.ethz.ch/~lteufelbe/coursereview</a>
+              to
+              <a href="https://coursereview.ch">https://coursereview.ch</a>.
+            </p>
+            <p>
+              If you believe you can improve the website or have any suggestions, please reach out
+              to us or directly make a pull request:
+              <a href="https://github.com/course-review/">https://github.com/course-review/</a>.
+            </p>
+            <p>
+              If you have any questions check out our
+              <a href="https://coursereview.ch/about">about page</a>.
+            </p>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
   </div>
 </template>
+
+<style scoped>
+.slide-text {
+  white-space: pre-line;
+}
+
+.info-text p + p {
+  margin-top: 0.5rem;
+}
+</style>
