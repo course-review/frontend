@@ -1,10 +1,10 @@
-import { fetchCoursesData2 } from '@/lib/api';
+import { fetchCoursesWithReviewAmount } from '@/lib/api';
 import { CoursesList } from '@/components/CoursesList';
 
 export const dynamic = 'force-dynamic';
 
 export default async function CoursesPage() {
-    const courses = await fetchCoursesData2();
+    const courses = await fetchCoursesWithReviewAmount();
 
     return (
         <div className="container py-8 max-w-5xl mx-auto">

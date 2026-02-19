@@ -54,7 +54,7 @@ export async function fetchCoursesData(): Promise<Course[]> {
     return apiFetch<Course[]>('/courses', { next: { revalidate: 86400 } });
 }
 
-export async function fetchCoursesData2(): Promise<CourseWithAmount[]> {
+export async function fetchCoursesWithReviewAmount(): Promise<CourseWithAmount[]> {
     return apiFetch<CourseWithAmount[]>('/coursesWithReviewAmount');
 }
 
