@@ -51,7 +51,7 @@ export async function apiHealth(): Promise<string> {
 }
 
 export async function fetchCoursesData(): Promise<Course[]> {
-    return apiFetch<Course[]>('/courses');
+    return apiFetch<Course[]>('/courses', { next: { revalidate: 86400 } });
 }
 
 export async function fetchCoursesData2(): Promise<CourseWithAmount[]> {
@@ -71,15 +71,15 @@ export async function fetchLatestReviews(): Promise<Course[]> {
 }
 
 export async function fetchName(courseNumber: string): Promise<string> {
-    return apiFetch<string>(`/courseName?course=${courseNumber}`);
+    return apiFetch<string>(`/courseName?course=${courseNumber}`, { next: { revalidate: 86400 } }); // Names rarely change
 }
 
 export async function fetchSemesters(): Promise<string[]> {
-    return apiFetch<string[]>('/currentSemesters');
+    return apiFetch<string[]>('/currentSemesters', { next: { revalidate: 86400 } });
 }
 
 export async function fetchStats(): Promise<Stats> {
-    return apiFetch<Stats>('/stats');
+    return apiFetch<Stats>('/stats', { next: { revalidate: 3600 } });
 }
 
 export async function fetchCoursesWithReviewsOrRatings(): Promise<Course[]> {
