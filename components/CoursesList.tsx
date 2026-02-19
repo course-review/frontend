@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowUpDown, Search } from 'lucide-react';
 import type { CourseWithAmount } from '@/types';
@@ -66,6 +66,14 @@ export function CoursesList({ initialCourses }: CoursesListProps) {
 
         return result;
     }, [initialCourses, searchQuery, sortConfig, showZeroReviews]);
+
+    const [visibleCount, setVisibleCount] = useState(50);
+    const visibleCourses = useMemo(() => filteredAndSortedCourses.slice(0, visibleCount), [filteredAndSortedCourses, visibleCount]);
+
+    // Reset visible count when search or sort changes
+    useEffect(() => {
+        setVisibleCount(50);
+    }, [searchQuery, sortConfig, showZeroReviews]);
 
     return (
         <div className="space-y-6">
@@ -136,7 +144,7 @@ export function CoursesList({ initialCourses }: CoursesListProps) {
                                 </tr>
                             </thead>
                             <tbody className="[&_tr:last-child]:border-0">
-                                {filteredAndSortedCourses.map((course) => (
+                                {visibleCourses.map((course) => (
                                     <tr
                                         key={course.CourseNumber}
                                         className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
@@ -167,6 +175,18 @@ export function CoursesList({ initialCourses }: CoursesListProps) {
                     </div>
                 </CardContent>
             </Card>
+
+            {filteredAndSortedCourses.length > visibleCount && (
+                <div className="flex justify-center pt-4">
+                    <Button
+                        variant="outline"
+                        onClick={() => setVisibleCount((prev) => prev + 50)}
+                        className="w-full max-w-xs"
+                    >
+                        Show More
+                    </Button>
+                </div>
+            )}
         </div>
     );
 }
