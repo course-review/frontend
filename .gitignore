@@ -35,3 +35,6 @@ tests_output/
 # wrangler files
 .wrangler
 .dev.vars
+
+#next.js
+.next
