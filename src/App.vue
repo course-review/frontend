@@ -168,6 +168,17 @@ onMounted(() => {
                 </template>
               </v-tooltip> -->
 
+              <v-tooltip location="bottom" text="Browse Courses">
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    variant="text"
+                    icon="mdi-format-list-bulleted"
+                    to="/courses"
+                    v-bind="props"
+                  />
+                </template>
+              </v-tooltip>
+
               <v-tooltip location="bottom" text="Compare Courses">
                 <template v-slot:activator="{ props }">
                   <v-badge v-if="comparisonStore.selectedCoursesCount > 0" :content="comparisonStore.selectedCoursesCount" color="primary" class="nav-icon-badge" offset-x="10" offset-y="10">
@@ -207,7 +218,13 @@ onMounted(() => {
                     title="Add a Review"
                   />
                   <v-list-item to="/user" prepend-icon="mdi-account" title="Your Reviews" />
-                  
+
+                  <v-list-item
+                    to="/courses"
+                    prepend-icon="mdi-format-list-bulleted"
+                    title="Browse Courses"
+                  />
+
                   <v-list-item to="/compare">
                     <template v-slot:prepend>
                       <v-badge v-if="comparisonStore.selectedCoursesCount > 0" :content="comparisonStore.selectedCoursesCount" color="primary" class="nav-icon-badge">
