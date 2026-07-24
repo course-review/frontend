@@ -91,6 +91,11 @@ onMounted(async () => {
               >{{ course.CourseName }}</v-list-item
             >
           </v-list>
+          <v-card-actions>
+            <v-btn variant="text" to="/courses" append-icon="mdi-arrow-right">
+              See all courses
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-col>
 

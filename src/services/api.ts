@@ -58,6 +58,29 @@ export interface Stats {
   TotalReviews: number
 }
 
+// Aggregate per-course rating averages/counts backing the /courses browse page.
+// Field names must match the sqlc-generated Go struct (GetCourseSummariesRow)
+// verbatim, since sqlc structs carry no json tags. The *Avg fields are backed
+// by pgtype.Float8 on the Go side (nullable, since a course can have reviews
+// but zero ratings for a category) which marshals to a plain JSON number or
+// `null` — never a {"Valid":true,...} wrapper.
+export interface CourseSummary {
+  CourseNumber: string
+  CourseName: string
+  RecommendedAvg: number | null
+  EngagingAvg: number | null
+  DifficultyAvg: number | null
+  EffortAvg: number | null
+  ResourcesAvg: number | null
+  RecommendedCount: number
+  EngagingCount: number
+  DifficultyCount: number
+  EffortCount: number
+  ResourcesCount: number
+  RatingCount: number
+  ReviewCount: number
+}
+
 // Create a typed Axios instance
 const API: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL
@@ -86,6 +109,10 @@ export const fetchRatings = async (courseNumber: string): Promise<AxiosResponse<
 
 export const fetchLatestReviews = async (): Promise<AxiosResponse<Course[]>> => {
   return API.get<Course[]>('/latestReviews')
+}
+
+export const fetchCourseSummaries = async (): Promise<AxiosResponse<CourseSummary[]>> => {
+  return API.get<CourseSummary[]>('/courseSummaries')
 }
 
 export const fetchName = async (courseNumber: string): Promise<AxiosResponse<string>> => {

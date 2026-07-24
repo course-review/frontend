@@ -38,6 +38,12 @@ const router = createRouter({
       component: () => import('../views/CompareView.vue'),
       meta: { requiresAuth: false }
     },
+    {
+      path: '/courses',
+      name: 'courses',
+      component: () => import('../views/CoursesView.vue'),
+      meta: { requiresAuth: false }
+    },
     // {
     //   path: '/user',
     //   name: 'user',
